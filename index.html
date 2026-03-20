@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蒲恆菲車業 | 台南外匯車、二手車買賣、汽車精品改裝</title>
+    <meta name="description" content="蒲恆菲車業 - 專營外匯車買賣(美、日、加、歐規)、汽車精品改裝、ECU動力升級。台南市仁德區，誠信經營，高價收購。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Noto Sans TC', 'Montserrat', sans-serif;
+            background: #f0f2f5;
+            color: #1a202c;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --gold: #9c7c38;
+            --gold-light: #d4a574;
+            --dark-bg: #f0f2f5;
+            --dark-card: #ffffff;
+            --dark-surface: #f7f8fa;
+            --dark-border: #d0d5dd;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --accent-blue: #718096;
+            --gradient-gold: linear-gradient(135deg, #4a5568, #718096, #a0aec0);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(240, 242, 245, 0.98);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; height: 80px;
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .nav-logo .logo-icon {
+            width: 46px; height: 46px;
+            background: var(--gradient-gold);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 18px; color: #0a0a0a;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .nav-logo .logo-text {
+            font-size: 22px; font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .nav-logo .logo-sub {
+            font-size: 11px; color: var(--text-secondary);
+            letter-spacing: 3px; margin-top: -2px;
+        }
+        .nav-links {
+            display: flex; gap: 8px; list-style: none;
+        }
+        .nav-links a {
+            padding: 10px 22px; font-size: 15px; font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.08);
+        }
+        .nav-cta {
+            background: var(--gradient-gold) !important;
+            color: #0a0a0a !important;
+            font-weight: 700 !important;
+            padding: 10px 28px !important;
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(113, 128, 150, 0.3);
+        }
+        .mobile-toggle {
+            display: none; background: none; border: none;
+            color: var(--gold); font-size: 26px; cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            height: 100vh; min-height: 650px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .hero-slider {
+            position: absolute; inset: 0;
+        }
+        .hero-slide {
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide-bg {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.85) saturate(0.8);
+            mask-image: radial-gradient(ellipse 120% 110% at 50% 48%, transparent 0%, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.65) 65%, rgba(0,0,0,0.85) 100%);
+            -webkit-mask-image: radial-gradient(ellipse 120% 110% at 50% 48%, transparent 0%, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.65) 65%, rgba(0,0,0,0.85) 100%);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 110% 100% at 50% 48%, rgba(240,242,245,0.9) 0%, rgba(240,242,245,0.65) 25%, rgba(240,242,245,0.3) 50%, transparent 75%);
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border: 1px solid #9c7c38;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #7a5f24;
+            letter-spacing: 4px;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(42px, 7vw, 80px);
+            font-weight: 900;
+            color: #0f1419;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            letter-spacing: 4px;
+            text-shadow: 0 2px 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.4);
+        }
+        .hero-title span {
+            background: linear-gradient(135deg, #7a5f24, #b8942e, #7a5f24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(156,124,56,0.3));
+        }
+        .hero-subtitle {
+            font-size: clamp(18px, 3vw, 28px);
+            color: #2d3748;
+            text-shadow: 0 1px 20px rgba(255,255,255,0.7);
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: 6px;
+        }
+        .hero-buttons {
+            display: flex; gap: 16px;
+            justify-content: center; flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 16px 36px;
+            border-radius: 8px;
+            font-size: 15px; font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #9c7c38, #c9a84c);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(156, 124, 56, 0.4);
+        }
+        .btn-outline {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid #d0d5dd;
+            color: #1a202c;
+        }
+        .btn-outline:hover {
+            border-color: #9c7c38;
+            color: #9c7c38;
+            background: rgba(255,255,255,0.95);
+        }
+        .hero-scroll {
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s ease infinite;
+        }
+        .hero-scroll i {
+            font-size: 28px; color: #9c7c38; opacity: 0.7;
+        }
+        .slider-dots {
+            position: absolute; bottom: 100px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 10px; z-index: 3;
+        }
+        .slider-dot {
+            width: 12px; height: 3px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-dot.active {
+            width: 30px;
+            background: #9c7c38;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            background: var(--dark-card);
+            border-top: 1px solid var(--dark-border);
+            border-bottom: 1px solid var(--dark-border);
+            padding: 50px 0;
+        }
+        .stats-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 30px; padding: 0 40px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px; font-weight: 800;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 14px; color: var(--text-secondary);
+            letter-spacing: 2px; margin-top: 6px;
+        }
+
+        /* ===== SECTIONS COMMON ===== */
+        .section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+        .section-line {
+            width: 60px; height: 3px;
+            background: var(--gradient-gold);
+            margin: 20px auto 0;
+            border-radius: 3px;
+        }
+
+        /* ===== ABOUT ===== */
+        .about {
+            background: var(--dark-surface);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: var(--dark-card);
+        }
+        .about-image-placeholder {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 50%, #a0aec0 100%);
+            position: relative;
+        }
+        .about-image-placeholder img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .about-image-placeholder i {
+            font-size: 80px;
+            color: #718096;
+            opacity: 0.3;
+        }
+        .about-image::after {
+            content: '';
+            position: absolute; inset: 0;
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            border-radius: 16px;
+        }
+        .about-text h3 {
+            font-size: 32px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        .about-text h3 span { color: var(--gold); }
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 30px;
+        }
+        .about-features {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .about-feature {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 18px;
+            background: var(--dark-card);
+            border-radius: 10px;
+            border: 1px solid var(--dark-border);
+        }
+        .about-feature i {
+            color: var(--gold); font-size: 18px;
+            width: 24px; text-align: center;
+        }
+        .about-feature span {
+            font-size: 14px; font-weight: 500;
+        }
+
+        /* ===== SERVICES ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .service-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(201, 168, 76, 0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .service-icon {
+            width: 70px; height: 70px;
+            margin: 0 auto 24px;
+            background: rgba(201, 168, 76, 0.08);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px;
+            color: var(--gold);
+            transition: all 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            background: var(--gradient-gold);
+            color: #0a0a0a;
+            transform: scale(1.1);
+        }
+        .service-card h3 {
+            font-size: 20px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+        }
+        .service-card p {
+            font-size: 14px; color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== INVENTORY ===== */
+        .inventory {
+            background: var(--dark-surface);
+        }
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .car-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .car-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            border-color: rgba(201, 168, 76, 0.2);
+        }
+        .car-image {
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: #e8eaed;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .car-image img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .car-card:hover .car-image img {
+            transform: scale(1.05);
+        }
+        .car-image i {
+            font-size: 50px; color: rgba(156,124,56,0.2);
+        }
+        .car-badge {
+            position: absolute; top: 12px; left: 12px;
+            background: var(--gold);
+            color: #0a0a0a;
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-size: 12px; font-weight: 700;
+        }
+        .car-info {
+            padding: 22px;
+        }
+        .car-brand {
+            font-size: 12px; color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .car-name {
+            font-size: 18px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+        }
+        .car-specs {
+            display: flex; gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .car-spec {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; color: var(--text-secondary);
+        }
+        .car-spec i { color: var(--gold); font-size: 12px; }
+        .car-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--dark-border);
+        }
+        .car-price {
+            font-size: 18px; font-weight: 800;
+            color: var(--gold);
+        }
+        .car-detail-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--gold);
+            border-radius: 6px;
+            font-size: 13px; font-weight: 600;
+            color: var(--gold);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: none;
+        }
+        .car-detail-btn:hover {
+            background: var(--gold);
+            color: #0a0a0a;
+        }
+
+        /* ===== WHY US ===== */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .why-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            padding: 36px 24px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        .why-card:hover {
+            border-color: rgba(201, 168, 76, 0.3);
+            transform: translateY(-6px);
+        }
+        .why-icon {
+            width: 60px; height: 60px;
+            margin: 0 auto 20px;
+            background: rgba(201, 168, 76, 0.08);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: var(--gold);
+        }
+        .why-card h4 {
+            font-size: 17px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        .why-card p {
+            font-size: 13px; color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            background: var(--dark-surface);
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .testimonial-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            padding: 36px;
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute; top: 20px; right: 24px;
+            font-size: 28px;
+            color: rgba(201, 168, 76, 0.1);
+        }
+        .testimonial-stars {
+            color: var(--gold);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .testimonial-text {
+            font-size: 15px; color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        .testimonial-author {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .testimonial-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 700;
+            color: #0a0a0a;
+        }
+        .testimonial-name {
+            font-size: 15px; font-weight: 600;
+            color: var(--text-primary);
+        }
+        .testimonial-car {
+            font-size: 12px; color: var(--text-secondary);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact {
+            background: var(--dark-surface);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 680px;
+            margin: 0 auto;
+            gap: 50px;
+        }
+        .contact-info-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+        .contact-info-card h3 {
+            font-size: 26px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+        }
+        .contact-item {
+            display: flex; align-items: flex-start; gap: 16px;
+            margin-bottom: 24px;
+        }
+        .contact-icon {
+            width: 46px; height: 46px;
+            background: rgba(201, 168, 76, 0.1);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); font-size: 18px;
+            flex-shrink: 0;
+        }
+        .contact-item-label {
+            font-size: 13px; color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .contact-item-value {
+            font-size: 16px; font-weight: 600;
+            color: var(--text-primary);
+        }
+        .contact-social {
+            display: flex; gap: 12px; margin-top: 30px;
+        }
+        .social-btn {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--dark-border);
+            color: var(--text-secondary);
+        }
+        .social-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+        .contact-form {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+        .contact-form h3 {
+            font-size: 26px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px; font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--dark-surface);
+            border: 1px solid var(--dark-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-gold);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px; font-weight: 700;
+            color: #0a0a0a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 168, 76, 0.3);
+        }
+
+        /* ===== MAP ===== */
+        .map-section {
+            width: 100%;
+            height: 400px;
+            filter: grayscale(0.6) brightness(0.8);
+        }
+        .map-section iframe {
+            width: 100%; height: 100%; border: none;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark-card);
+            border-top: 1px solid var(--dark-border);
+            padding: 60px 40px 30px;
+        }
+        .footer-grid {
+            max-width: 1400px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+        .footer-brand .logo-text {
+            font-size: 24px; font-weight: 800;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+        .footer-brand p {
+            font-size: 14px; color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .footer h4 {
+            font-size: 16px; font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            font-size: 14px; color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-contact-item {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 14px; color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .footer-contact-item i { color: var(--gold); width: 18px; }
+        .footer-bottom {
+            max-width: 1400px; margin: 0 auto;
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-bottom p {
+            font-size: 13px; color: #666;
+        }
+
+        /* ===== FLOATING LINE BTN ===== */
+        .floating-line {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 999;
+            width: 60px; height: 60px;
+            background: #06c755;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; color: white;
+            box-shadow: 0 4px 20px rgba(6, 199, 85, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .floating-line:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(6, 199, 85, 0.5);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            display: none;
+            position: fixed; top: 80px; left: 0; right: 0; bottom: 0;
+            background: rgba(10,10,10,0.98);
+            z-index: 999;
+            padding: 40px;
+        }
+        .mobile-menu.open { display: flex; flex-direction: column; gap: 8px; }
+        .mobile-menu a {
+            display: block;
+            padding: 16px 20px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .mobile-menu a:hover { color: var(--gold); background: rgba(201,168,76,0.05); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .services-grid, .inventory-grid, .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .section { padding: 70px 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-grid, .inventory-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .stat-number { font-size: 36px; }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="#" class="nav-logo">
+            <div class="logo-icon">菲</div>
+            <div>
+                <div class="logo-text">蒲恆菲車業</div>
+                <div class="logo-sub">PU HENG FEI AUTO</div>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about">關於我們</a></li>
+            <li><a href="#services">服務項目</a></li>
+            <li><a href="#inventory">在庫車輛</a></li>
+            <li><a href="#why">為何選我們</a></li>
+            <li><a href="#testimonials">顧客評價</a></li>
+            <li><a href="#contact" class="nav-cta">聯絡我們</a></li>
+        </ul>
+        <button class="mobile-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars" id="menuIcon"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="toggleMenu()">關於我們</a>
+    <a href="#services" onclick="toggleMenu()">服務項目</a>
+    <a href="#inventory" onclick="toggleMenu()">在庫車輛</a>
+    <a href="#why" onclick="toggleMenu()">為何選我們</a>
+    <a href="#testimonials" onclick="toggleMenu()">顧客評價</a>
+    <a href="#contact" onclick="toggleMenu()">聯絡我們</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-slider">
+        <div class="hero-slide active">
+            <img class="hero-slide-bg" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80" alt="展示廳車輛">
+        </div>
+        <div class="hero-slide">
+            <img class="hero-slide-bg" src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=80" alt="豪華汽車">
+        </div>
+        <div class="hero-slide">
+            <img class="hero-slide-bg" src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=1920&q=80" alt="精選車款">
+        </div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-badge">Since Tainan</div>
+        <h1 class="hero-title"><span>蒲恆菲</span>車業</h1>
+        <p class="hero-subtitle">誠信經營 ・ 品質保證 ・ 專業服務</p>
+        <div class="hero-buttons">
+            <a href="#inventory" class="btn btn-primary">
+                <i class="fas fa-car"></i> 瀏覽車輛
+            </a>
+            <a href="#contact" class="btn btn-outline">
+                <i class="fas fa-phone"></i> 立即聯繫
+            </a>
+        </div>
+    </div>
+    <div class="slider-dots">
+        <div class="slider-dot active" onclick="goSlide(0)"></div>
+        <div class="slider-dot" onclick="goSlide(1)"></div>
+        <div class="slider-dot" onclick="goSlide(2)"></div>
+    </div>
+    <div class="hero-scroll">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+    <div class="stats-grid">
+        <div class="stat-item animate-on-scroll">
+            <div class="stat-number" data-count="500">0</div>
+            <div class="stat-label">成交車輛 +</div>
+        </div>
+        <div class="stat-item animate-on-scroll">
+            <div class="stat-number" data-count="10">0</div>
+            <div class="stat-label">年專業經驗</div>
+        </div>
+        <div class="stat-item animate-on-scroll">
+            <div class="stat-number" data-count="9">0</div>
+            <div class="stat-label">在庫現車</div>
+        </div>
+        <div class="stat-item animate-on-scroll">
+            <div class="stat-number" data-count="100">0</div>
+            <div class="stat-label">客戶滿意度 %</div>
+        </div>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+    <div class="section" style="max-width:1400px; margin:0 auto;">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">About Us</div>
+            <h2 class="section-title">關於蒲恆菲車業</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-image animate-on-scroll">
+                <div class="about-image-placeholder">
+                    <img src="https://usedcarimage.carnews.com/upload/ShopImages/images/si_img_2374_f4586475-eaeb-46ff-9fc2-06c5df528231.jpg" alt="蒲恆菲車業展示廳">
+                </div>
+            </div>
+            <div class="about-text animate-on-scroll">
+                <h3>用心經營，以<span>誠信</span>為本</h3>
+                <p>蒲恆菲車業位於台南市仁德區，由「憲憲」親自帶領的專業團隊，專營外匯車買賣，涵蓋美規、日規、加規、歐規等多國車款。我們堅持透明、誠信的經營理念，每輛車皆經嚴格把關，提供 Goo 鑑定認證，讓每位客戶都能安心購車。</p>
+                <p>除了買賣二手車與外匯車，我們更提供汽車精品改裝、ECU 動力升級等多元化服務，打造一條龍的購車體驗。不論您是想高價出售愛車，還是尋找夢想座駕，蒲恆菲車業都是您最值得信賴的夥伴。</p>
+                <div class="about-features">
+                    <div class="about-feature"><i class="fas fa-check-circle"></i><span>Goo 鑑定認證</span></div>
+                    <div class="about-feature"><i class="fas fa-check-circle"></i><span>全省估價服務</span></div>
+                    <div class="about-feature"><i class="fas fa-check-circle"></i><span>外匯車專營</span></div>
+                    <div class="about-feature"><i class="fas fa-check-circle"></i><span>售後服務完善</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+    <div class="section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">Our Services</div>
+            <h2 class="section-title">服務項目</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="services-grid">
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon"><i class="fas fa-ship"></i></div>
+                <h3>外匯車代購</h3>
+                <p>專營美規、日規、加規、歐規外匯車代購，提供完整的進口流程服務，從海外選車到交車一條龍。</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon"><i class="fas fa-car"></i></div>
+                <h3>二手車買賣</h3>
+                <p>嚴選優質中古車，每輛車皆通過 Goo 鑑定認證，車況透明公開，讓您買得安心、開得放心。</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon"><i class="fas fa-dollar-sign"></i></div>
+                <h3>高價收購</h3>
+                <p>全省高價收購各式車輛，專業估價團隊提供合理價格，快速完成交易流程，讓您輕鬆賣車。</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon"><i class="fas fa-cogs"></i></div>
+                <h3>汽車精品改裝</h3>
+                <p>提供各式汽車精品及改裝服務，從外觀到內裝，打造專屬您的個人風格座駕。</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                <h3>ECU 動力升級</h3>
+                <p>專業 ECU 調校與動力升級服務，釋放引擎潛能，提升駕駛體驗與車輛性能表現。</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="service-icon"><i class="fas fa-wrench"></i></div>
+                <h3>售後保養維修</h3>
+                <p>完善的售後服務體系，提供定期保養、維修保固等服務，讓您的愛車持續保持最佳狀態。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- INVENTORY -->
+<section class="inventory" id="inventory">
+    <div class="section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">In Stock</div>
+            <h2 class="section-title">在庫車輛</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="inventory-grid" id="inventory-grid">
+            <!-- 車輛由 cars.json 動態載入 -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+    <div class="section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">Why Choose Us</div>
+            <h2 class="section-title">為何選擇蒲恆菲</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="why-grid">
+            <div class="why-card animate-on-scroll">
+                <div class="why-icon"><i class="fas fa-handshake"></i></div>
+                <h4>誠信經營</h4>
+                <p>秉持「先誠實，再成交」的理念，車況透明公開，絕不隱瞞。</p>
+            </div>
+            <div class="why-card animate-on-scroll">
+                <div class="why-icon"><i class="fas fa-certificate"></i></div>
+                <h4>Goo 鑑定</h4>
+                <p>全車系通過第三方 Goo 鑑定認證，為您的權益多一層保障。</p>
+            </div>
+            <div class="why-card animate-on-scroll">
+                <div class="why-icon"><i class="fas fa-globe-asia"></i></div>
+                <h4>多國車源</h4>
+                <p>美規、日規、加規、歐規外匯車，多元選擇滿足不同需求。</p>
+            </div>
+            <div class="why-card animate-on-scroll">
+                <div class="why-icon"><i class="fas fa-headset"></i></div>
+                <h4>售後無憂</h4>
+                <p>完善的售後服務體系，買車後持續提供保養維修支援。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+    <div class="section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">Testimonials</div>
+            <h2 class="section-title">顧客好評</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card animate-on-scroll">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">老闆很親切，進去感覺心情很放鬆，也很會介紹車的優缺點，不會強迫推銷，整個購車過程非常愉快！</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">阿</div>
+                    <div>
+                        <div class="testimonial-name">阿永</div>
+                        <div class="testimonial-car">購入 BMW 5 Series</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card animate-on-scroll">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">車況非常透明，有 Goo 鑑定讓人很放心。售後服務也做得很好，有任何問題隨時都能諮詢，大推！</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">小</div>
+                    <div>
+                        <div class="testimonial-name">小陳</div>
+                        <div class="testimonial-car">購入 BENZ A-Class</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card animate-on-scroll">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">朋友介紹來的，憲憲人很實在，不會亂開價。幫我找到一台很滿意的車，價格也很合理，非常感謝！</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">王</div>
+                    <div>
+                        <div class="testimonial-name">王大哥</div>
+                        <div class="testimonial-car">購入 AUDI Q5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+    <div class="section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">Contact Us</div>
+            <h2 class="section-title">聯絡我們</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info-card animate-on-scroll">
+                <h3>蒲恆菲車業有限公司</h3>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <div class="contact-item-label">地址</div>
+                        <div class="contact-item-value">台南市仁德區大同路三段202號</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <div class="contact-item-label">電話</div>
+                        <div class="contact-item-value"><a href="tel:0938512236">0938-512-236（憲憲）</a></div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div class="contact-item-label">營業時間</div>
+                        <div class="contact-item-value">週一至週六 10:00 - 21:00<br><span style="color: var(--gold); font-size: 13px;">週日公休</span></div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <div class="contact-item-label">Email</div>
+                        <div class="contact-item-value"><a href="mailto:a0938512236@gmail.com">a0938512236@gmail.com</a></div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-line"></i></div>
+                    <div>
+                        <div class="contact-item-label">LINE ID</div>
+                        <div class="contact-item-value">a791201</div>
+                    </div>
+                </div>
+                <div class="contact-social">
+                    <a href="https://www.facebook.com/p/%E6%86%B2%E6%86%B2-l-%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD-100064702431090/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/explore/locations/111778700975486/l/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="https://line.me/ti/p/~a791201" target="_blank" class="social-btn"><i class="fab fa-line"></i></a>
+                    <a href="tel:0938512236" class="social-btn"><i class="fas fa-phone"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAP -->
+<div class="map-section">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d120.2484!3d22.9341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e76e1e0e2e8c1%3A0x0!2zMjLCsDU2JzAyLjgiTiAxMjDCsDE0JzU0LjIiRQ!5e0!3m2!1szh-TW!2stw!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <div class="logo-text">蒲恆菲車業</div>
+            <p>專營外匯車買賣、汽車精品改裝、ECU 動力升級。秉持誠信經營的理念，為每位客戶提供最優質的購車體驗。</p>
+        </div>
+        <div>
+            <h4>快速連結</h4>
+            <ul class="footer-links">
+                <li><a href="#about">關於我們</a></li>
+                <li><a href="#services">服務項目</a></li>
+                <li><a href="#inventory">在庫車輛</a></li>
+                <li><a href="#testimonials">顧客評價</a></li>
+                <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>服務項目</h4>
+            <ul class="footer-links">
+                <li><a href="#services">外匯車代購</a></li>
+                <li><a href="#services">二手車買賣</a></li>
+                <li><a href="#services">高價收購</a></li>
+                <li><a href="#services">汽車精品改裝</a></li>
+                <li><a href="#services">ECU 動力升級</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>聯絡資訊</h4>
+            <div class="footer-contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                台南市仁德區大同路三段202號
+            </div>
+            <div class="footer-contact-item">
+                <i class="fas fa-phone"></i>
+                0938-512-236
+            </div>
+            <div class="footer-contact-item">
+                <i class="fas fa-envelope"></i>
+                a0938512236@gmail.com
+            </div>
+            <div class="footer-contact-item">
+                <i class="fas fa-clock"></i>
+                週一至週六 10:00-21:00
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 蒲恆菲車業有限公司 All Rights Reserved.</p>
+        <p>台南市仁德區大同路三段202號</p>
+    </div>
+</footer>
+
+<!-- Floating LINE Button -->
+<a href="https://line.me/ti/p/~a791201" target="_blank" class="floating-line">
+    <i class="fab fa-line"></i>
+</a>
+
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile menu
+    function toggleMenu() {
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.getElementById('menuIcon');
+        menu.classList.toggle('open');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    }
+
+    // Hero slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.slider-dot');
+
+    function goSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        currentSlide = n;
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+
+    setInterval(() => {
+        goSlide((currentSlide + 1) % slides.length);
+    }, 5000);
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Counter animation
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.getAttribute('data-count'));
+                let current = 0;
+                const step = target / 60;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    el.textContent = Math.floor(current);
+                }, 20);
+                counterObserver.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-number').forEach(el => counterObserver.observe(el));
+
+    // 動態載入車輛資料（Google Sheets CSV → 網站自動渲染）
+    const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4U-vrlv-YDSlXQ3RS4sSh-L86m_achN1Abb37lKrvk7rptBR9jZFrLKNuSms_YDHh54pYwU6vZBC0/pub?output=csv';
+
+    function parseCSV(text) {
+        const lines = text.split('\n').filter(l => l.trim());
+        if (lines.length < 2) return [];
+        const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+        return lines.slice(1).map(line => {
+            const vals = [];
+            let current = '', inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (ch === '"') { inQuotes = !inQuotes; }
+                else if (ch === ',' && !inQuotes) { vals.push(current.trim()); current = ''; }
+                else { current += ch; }
+            }
+            vals.push(current.trim());
+            const obj = {};
+            headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/^"|"$/g, ''));
+            return obj;
+        }).filter(car => car.name);
+    }
+
+    // 自動轉換 Google Drive 分享連結為可顯示的圖片網址
+    function toImageUrl(url) {
+        if (!url) return '';
+        // 從各種 Drive 連結格式中提取 FILE_ID
+        const patterns = [
+            /drive\.google\.com\/file\/d\/([^\/\?]+)/,
+            /drive\.google\.com\/open\?id=([^&]+)/,
+            /drive\.google\.com\/uc\?id=([^&]+)/
+        ];
+        for (const p of patterns) {
+            const m = url.match(p);
+            if (m) return 'https://lh3.googleusercontent.com/d/' + m[1] + '=w800';
+        }
+        // 一般圖片網址直接回傳
+        return url;
+    }
+
+    function renderCars(cars) {
+        const grid = document.getElementById('inventory-grid');
+        grid.innerHTML = cars.map(car => `
+            <div class="car-card animate-on-scroll">
+                <div class="car-image">
+                    <img src="${toImageUrl(car.image)}" alt="${car.name}" loading="lazy">
+                    ${car.badge ? `<span class="car-badge">${car.badge}</span>` : ''}
+                </div>
+                <div class="car-info">
+                    <div class="car-brand">${car.brand}</div>
+                    <div class="car-name">${car.name}</div>
+                    <div class="car-specs">
+                        <span class="car-spec"><i class="fas fa-calendar"></i> ${car.year}</span>
+                        <span class="car-spec"><i class="fas fa-tachometer-alt"></i> ${car.mileage}</span>
+                        <span class="car-spec"><i class="fas fa-map-marker-alt"></i> ${car.location}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        grid.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // 優先從 Google Sheets 載入，失敗時 fallback 到本地 cars.json
+    fetch(SHEET_CSV)
+        .then(r => { if (!r.ok) throw new Error('Sheet fetch failed'); return r.text(); })
+        .then(csv => renderCars(parseCSV(csv)))
+        .catch(() => {
+            fetch('cars.json')
+                .then(r => r.json())
+                .then(cars => renderCars(cars));
+        });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
