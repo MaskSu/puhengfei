@@ -54,26 +54,21 @@
             padding: 0 40px; height: 80px;
         }
         .nav-logo {
-            display: flex; align-items: center; gap: 12px;
+            display: flex; align-items: center; gap: 10px;
         }
-        .nav-logo .logo-icon {
-            width: 46px; height: 46px;
-            background: var(--gradient-gold);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 18px; color: #0a0a0a;
-            font-family: 'Montserrat', sans-serif;
+        .nav-logo img {
+            height: 30px;
+            width: auto;
         }
         .nav-logo .logo-text {
-            font-size: 22px; font-weight: 700;
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 20px; font-weight: 700;
+            color: var(--text-primary);
             letter-spacing: 2px;
+            line-height: 1.2;
         }
         .nav-logo .logo-sub {
-            font-size: 11px; color: var(--text-secondary);
-            letter-spacing: 3px; margin-top: -2px;
+            font-size: 10px; color: var(--text-secondary);
+            letter-spacing: 3px;
         }
         .nav-links {
             display: flex; gap: 8px; list-style: none;
@@ -108,7 +103,6 @@
         .hero {
             position: relative;
             height: 100vh; min-height: 650px;
-            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
         .hero-slider {
@@ -123,16 +117,20 @@
         .hero-slide-bg {
             width: 100%; height: 100%;
             object-fit: cover;
-            filter: brightness(0.85) saturate(0.8);
-            mask-image: radial-gradient(ellipse 120% 110% at 50% 48%, transparent 0%, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.65) 65%, rgba(0,0,0,0.85) 100%);
-            -webkit-mask-image: radial-gradient(ellipse 120% 110% at 50% 48%, transparent 0%, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.65) 65%, rgba(0,0,0,0.85) 100%);
+            object-position: center 40%;
         }
         .hero-overlay {
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse 110% 100% at 50% 48%, rgba(240,242,245,0.9) 0%, rgba(240,242,245,0.65) 25%, rgba(240,242,245,0.3) 50%, transparent 75%);
+            background: linear-gradient(180deg,
+                transparent 0%,
+                transparent 55%,
+                rgba(0,0,0,0.4) 80%,
+                rgba(0,0,0,0.7) 100%
+            );
         }
         .hero-content {
-            position: relative; z-index: 2;
+            position: absolute; bottom: 80px; left: 0; right: 0;
+            z-index: 2;
             text-align: center;
             padding: 0 20px;
             animation: fadeInUp 1s ease 0.3s both;
@@ -168,11 +166,11 @@
             filter: drop-shadow(0 2px 8px rgba(156,124,56,0.3));
         }
         .hero-subtitle {
-            font-size: clamp(18px, 3vw, 28px);
-            color: #2d3748;
-            text-shadow: 0 1px 20px rgba(255,255,255,0.7);
+            font-size: clamp(16px, 2.5vw, 22px);
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 1px 10px rgba(0,0,0,0.5);
             font-weight: 400;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             letter-spacing: 6px;
         }
         .hero-buttons {
@@ -197,15 +195,15 @@
             box-shadow: 0 8px 30px rgba(156, 124, 56, 0.4);
         }
         .btn-outline {
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(10px);
-            border: 1px solid #d0d5dd;
-            color: #1a202c;
+            border: 1px solid rgba(255,255,255,0.5);
+            color: #fff;
         }
         .btn-outline:hover {
-            border-color: #9c7c38;
-            color: #9c7c38;
-            background: rgba(255,255,255,0.95);
+            border-color: #c9a84c;
+            color: #c9a84c;
+            background: rgba(255,255,255,0.2);
         }
         .hero-scroll {
             position: absolute; bottom: 40px; left: 50%;
@@ -214,7 +212,7 @@
             animation: bounce 2s ease infinite;
         }
         .hero-scroll i {
-            font-size: 28px; color: #9c7c38; opacity: 0.7;
+            font-size: 28px; color: rgba(255,255,255,0.7); opacity: 0.7;
         }
         .slider-dots {
             position: absolute; bottom: 100px; left: 50%;
@@ -255,6 +253,9 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
+        }
+        .stat-suffix {
+            font-size: 28px; font-weight: 600;
         }
         .stat-label {
             font-size: 14px; color: var(--text-secondary);
@@ -517,6 +518,146 @@
         .car-detail-btn:hover {
             background: var(--gold);
             color: #0a0a0a;
+        }
+
+        /* ===== CAR DETAIL MODAL ===== */
+        .car-modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            align-items: center; justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+        .car-modal-overlay.open {
+            display: flex;
+        }
+        .car-modal {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 20px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .car-modal-close {
+            position: absolute; top: 14px; right: 14px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .car-modal-close:hover { background: rgba(0,0,0,0.8); }
+        .car-modal-gallery {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 20px 20px 0 0;
+            overflow-y: hidden;
+        }
+        .car-modal-gallery::-webkit-scrollbar { height: 4px; }
+        .car-modal-gallery::-webkit-scrollbar-track { background: transparent; }
+        .car-modal-gallery::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+        .car-modal-gallery img {
+            min-width: 100%;
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+        .car-modal-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 0 4px;
+        }
+        .car-modal-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--dark-border);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0;
+        }
+        .car-modal-dot.active {
+            background: var(--gold);
+            width: 20px;
+            border-radius: 4px;
+        }
+        .car-modal-body {
+            padding: 20px 24px 28px;
+        }
+        .car-modal-body .car-brand {
+            font-size: 12px; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 2px;
+            font-weight: 600; margin-bottom: 6px;
+        }
+        .car-modal-body .car-name {
+            font-size: 22px; font-weight: 700;
+            color: var(--text-primary); margin-bottom: 14px;
+        }
+        .car-modal-body .car-specs {
+            display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+        .car-modal-body .car-spec {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; color: var(--text-secondary);
+        }
+        .car-modal-body .car-spec i { color: var(--gold); font-size: 12px; }
+        .car-modal-body .car-price {
+            font-size: 20px; font-weight: 800;
+            color: #b8942e; margin-left: 0;
+        }
+        .car-modal-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .car-modal-cta {
+            margin-top: 20px;
+            display: flex; gap: 12px;
+        }
+        .car-modal-cta a {
+            flex: 1;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-size: 14px; font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .car-modal-cta .btn-line {
+            background: #06c755; color: #fff;
+        }
+        .car-modal-cta .btn-line:hover { background: #05b04a; }
+        .car-modal-cta .btn-phone {
+            background: var(--gold); color: #0a0a0a;
+        }
+        .car-modal-cta .btn-phone:hover { filter: brightness(1.1); }
+
+        @media (max-width: 768px) {
+            .car-modal { max-width: 100%; border-radius: 16px; }
+            .car-modal-body { padding: 16px 18px 22px; }
+            .car-modal-body .car-name { font-size: 19px; }
         }
 
         /* ===== WHY US ===== */
@@ -791,23 +932,35 @@
             font-size: 13px; color: #666;
         }
 
-        /* ===== FLOATING LINE BTN ===== */
-        .floating-line {
+        /* ===== FLOATING SIDEBAR ===== */
+        .float-sidebar {
             position: fixed;
-            bottom: 30px; right: 30px;
+            right: 16px; top: 18%;
             z-index: 999;
-            width: 60px; height: 60px;
-            background: #06c755;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .float-btn {
+            width: 48px; height: 48px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: white;
-            box-shadow: 0 4px 20px rgba(6, 199, 85, 0.4);
+            font-size: 22px; color: #fff;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
             cursor: pointer;
+            text-decoration: none;
         }
-        .floating-line:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(6, 199, 85, 0.5);
+        .float-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .float-btn.line { background: #06c755; }
+        .float-btn.fb { background: #1877f2; }
+        .float-btn.ig { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
+        .float-btn.phone { background: var(--gold); }
+        .float-btn.email { background: #4a5568; }
+        @media (max-width: 768px) {
+            .float-sidebar { right: 10px; top: 18%; bottom: auto; }
+            .float-btn { width: 42px; height: 42px; font-size: 19px; }
         }
 
         /* ===== ANIMATIONS ===== */
@@ -834,20 +987,22 @@
         .mobile-menu {
             display: none;
             position: fixed; top: 80px; left: 0; right: 0; bottom: 0;
-            background: rgba(10,10,10,0.98);
+            background: rgba(255,255,255,0.98);
             z-index: 999;
             padding: 40px;
+            backdrop-filter: blur(20px);
         }
         .mobile-menu.open { display: flex; flex-direction: column; gap: 8px; }
         .mobile-menu a {
             display: block;
             padding: 16px 20px;
             font-size: 18px;
-            color: var(--text-secondary);
+            color: var(--text-primary);
             border-radius: 10px;
             transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
         }
-        .mobile-menu a:hover { color: var(--gold); background: rgba(201,168,76,0.05); }
+        .mobile-menu a:hover { color: var(--gold); background: rgba(201,168,76,0.08); }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
@@ -859,16 +1014,74 @@
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .mobile-toggle { display: block; }
+            .nav-container { padding: 0 16px; }
+            .nav-logo img { height: 24px; }
+            .nav-logo .logo-text { font-size: 16px; letter-spacing: 1px; }
+            .nav-logo .logo-sub { font-size: 8px; letter-spacing: 2px; }
+            .nav-logo { gap: 8px; }
             .section { padding: 70px 20px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .services-grid, .inventory-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .services-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .inventory-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 16px;
+                padding-bottom: 12px;
+            }
+            .inventory-grid::-webkit-scrollbar { height: 4px; }
+            .inventory-grid::-webkit-scrollbar-track { background: transparent; }
+            .inventory-grid::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+            .inventory-grid .car-card {
+                min-width: 280px;
+                max-width: 300px;
+                flex-shrink: 0;
+                scroll-snap-align: start;
+            }
             .why-grid { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
-            .hero-buttons { flex-direction: column; align-items: center; }
             .stat-number { font-size: 36px; }
             .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+
+            /* 手機版 Hero：圖片+文字上下分開 */
+            .hero {
+                height: auto; min-height: auto;
+                display: flex; flex-direction: column;
+                margin-top: 80px;
+            }
+            .hero-slider {
+                position: relative; inset: auto;
+                width: 100%; height: 55vw;
+            }
+            .hero-slide { position: relative; }
+            .hero-slide-bg { object-position: center center; }
+            .hero-overlay { display: none; }
+            .hero-content {
+                position: relative; bottom: auto;
+                background: var(--dark-bg);
+                padding: 24px 20px 32px;
+                text-align: center;
+            }
+            .hero-subtitle {
+                color: var(--text-primary);
+                text-shadow: none;
+                font-size: 14px;
+                letter-spacing: 3px;
+                margin-bottom: 20px;
+            }
+            .hero-buttons { flex-direction: column; align-items: center; gap: 10px; }
+            .hero-buttons .btn {
+                width: 100%; justify-content: center;
+                padding: 14px 24px; font-size: 14px;
+            }
+            .hero-buttons .btn-outline {
+                background: rgba(0,0,0,0.04);
+                border-color: var(--dark-border);
+                color: var(--text-primary);
+            }
         }
     </style>
 </head>
@@ -878,7 +1091,7 @@
 <nav class="navbar" id="navbar">
     <div class="nav-container">
         <a href="#" class="nav-logo">
-            <div class="logo-icon">菲</div>
+            <img src="fwdlogo/logo.png" alt="蒲恆菲車業">
             <div>
                 <div class="logo-text">蒲恆菲車業</div>
                 <div class="logo-sub">PU HENG FEI AUTO</div>
@@ -912,19 +1125,11 @@
 <section class="hero">
     <div class="hero-slider">
         <div class="hero-slide active">
-            <img class="hero-slide-bg" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80" alt="展示廳車輛">
-        </div>
-        <div class="hero-slide">
-            <img class="hero-slide-bg" src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=80" alt="豪華汽車">
-        </div>
-        <div class="hero-slide">
-            <img class="hero-slide-bg" src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=1920&q=80" alt="精選車款">
+            <img class="hero-slide-bg" src="fwdlogo/1.jpg" alt="蒲恆菲車業">
         </div>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <div class="hero-badge">Since Tainan</div>
-        <h1 class="hero-title"><span>蒲恆菲</span>車業</h1>
         <p class="hero-subtitle">誠信經營 ・ 品質保證 ・ 專業服務</p>
         <div class="hero-buttons">
             <a href="#inventory" class="btn btn-primary">
@@ -935,34 +1140,26 @@
             </a>
         </div>
     </div>
-    <div class="slider-dots">
-        <div class="slider-dot active" onclick="goSlide(0)"></div>
-        <div class="slider-dot" onclick="goSlide(1)"></div>
-        <div class="slider-dot" onclick="goSlide(2)"></div>
-    </div>
-    <div class="hero-scroll">
-        <i class="fas fa-chevron-down"></i>
-    </div>
 </section>
 
 <!-- STATS BAR -->
 <div class="stats-bar">
     <div class="stats-grid">
         <div class="stat-item animate-on-scroll">
-            <div class="stat-number" data-count="500">0</div>
-            <div class="stat-label">成交車輛 +</div>
+            <div class="stat-number" data-count="600">0<span class="stat-suffix">+</span></div>
+            <div class="stat-label">成交車輛</div>
         </div>
         <div class="stat-item animate-on-scroll">
             <div class="stat-number" data-count="10">0</div>
             <div class="stat-label">年專業經驗</div>
         </div>
         <div class="stat-item animate-on-scroll">
-            <div class="stat-number" data-count="9">0</div>
+            <div class="stat-number" data-count="50">0<span class="stat-suffix">+</span></div>
             <div class="stat-label">在庫現車</div>
         </div>
         <div class="stat-item animate-on-scroll">
-            <div class="stat-number" data-count="100">0</div>
-            <div class="stat-label">客戶滿意度 %</div>
+            <div class="stat-number" data-count="100">0<span class="stat-suffix">%</span></div>
+            <div class="stat-label">客戶滿意度</div>
         </div>
     </div>
 </div>
@@ -1168,7 +1365,7 @@
                     <div class="contact-icon"><i class="fas fa-clock"></i></div>
                     <div>
                         <div class="contact-item-label">營業時間</div>
-                        <div class="contact-item-value">週一至週六 10:00 - 21:00<br><span style="color: var(--gold); font-size: 13px;">週日公休</span></div>
+                        <div class="contact-item-value">週一至週五 : 09:30 - 21:00<br>週六至週日 : 10:00 - 18:00</div>
                     </div>
                 </div>
                 <div class="contact-item">
@@ -1244,7 +1441,7 @@
             </div>
             <div class="footer-contact-item">
                 <i class="fas fa-clock"></i>
-                週一至週六 10:00-21:00
+                週一至週五 09:30-21:00 / 週六日 10:00-18:00
             </div>
         </div>
     </div>
@@ -1254,10 +1451,14 @@
     </div>
 </footer>
 
-<!-- Floating LINE Button -->
-<a href="https://line.me/ti/p/~a791201" target="_blank" class="floating-line">
-    <i class="fab fa-line"></i>
-</a>
+<!-- Floating Sidebar -->
+<div class="float-sidebar">
+    <a href="https://line.me/ti/p/~a791201" target="_blank" class="float-btn line" title="LINE"><i class="fab fa-line"></i></a>
+    <a href="https://www.facebook.com/p/%E6%86%B2%E6%86%B2-l-%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD-100064702431090/" target="_blank" class="float-btn fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/explore/locations/111778700975486/l/" target="_blank" class="float-btn ig" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="tel:0938512236" class="float-btn phone" title="撥打電話"><i class="fas fa-phone"></i></a>
+    <a href="mailto:a0938512236@gmail.com" class="float-btn email" title="Email"><i class="fas fa-envelope"></i></a>
+</div>
 
 <script>
     // Navbar scroll effect
@@ -1275,22 +1476,22 @@
         icon.classList.toggle('fa-times');
     }
 
-    // Hero slider
-    let currentSlide = 0;
+    // Hero slider (disabled — single image)
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.slider-dot');
-
-    function goSlide(n) {
-        slides[currentSlide].classList.remove('active');
-        dots[currentSlide].classList.remove('active');
-        currentSlide = n;
-        slides[currentSlide].classList.add('active');
-        dots[currentSlide].classList.add('active');
+    if (slides.length > 1) {
+        let currentSlide = 0;
+        function goSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            if (dots[currentSlide]) dots[currentSlide].classList.remove('active');
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+            if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+        }
+        setInterval(() => {
+            goSlide((currentSlide + 1) % slides.length);
+        }, 5000);
     }
-
-    setInterval(() => {
-        goSlide((currentSlide + 1) % slides.length);
-    }, 5000);
 
     // Scroll animations
     const observer = new IntersectionObserver((entries) => {
@@ -1317,7 +1518,9 @@
                         current = target;
                         clearInterval(timer);
                     }
-                    el.textContent = Math.floor(current);
+                    const suffix = el.querySelector('.stat-suffix');
+                    const suffixHTML = suffix ? suffix.outerHTML : '';
+                    el.innerHTML = Math.floor(current) + suffixHTML;
                 }, 20);
                 counterObserver.unobserve(el);
             }
@@ -1330,21 +1533,32 @@
     const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4U-vrlv-YDSlXQ3RS4sSh-L86m_achN1Abb37lKrvk7rptBR9jZFrLKNuSms_YDHh54pYwU6vZBC0/pub?output=csv';
 
     function parseCSV(text) {
-        const lines = text.split('\n').filter(l => l.trim());
-        if (lines.length < 2) return [];
-        const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-        return lines.slice(1).map(line => {
-            const vals = [];
-            let current = '', inQuotes = false;
-            for (let i = 0; i < line.length; i++) {
-                const ch = line[i];
-                if (ch === '"') { inQuotes = !inQuotes; }
-                else if (ch === ',' && !inQuotes) { vals.push(current.trim()); current = ''; }
-                else { current += ch; }
+        // 支援儲存格內換行（Google Sheets 匯出時用雙引號包裹含換行的欄位）
+        const rows = [];
+        let current = '', inQuotes = false, row = [];
+        for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            if (ch === '"') {
+                if (inQuotes && text[i+1] === '"') { current += '"'; i++; }
+                else { inQuotes = !inQuotes; }
+            } else if (ch === ',' && !inQuotes) {
+                row.push(current); current = '';
+            } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+                if (ch === '\r' && text[i+1] === '\n') i++;
+                row.push(current); current = '';
+                if (row.some(v => v.trim())) rows.push(row);
+                row = [];
+            } else {
+                current += ch;
             }
-            vals.push(current.trim());
+        }
+        row.push(current);
+        if (row.some(v => v.trim())) rows.push(row);
+        if (rows.length < 2) return [];
+        const headers = rows[0].map(h => h.trim());
+        return rows.slice(1).map(r => {
             const obj = {};
-            headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/^"|"$/g, ''));
+            headers.forEach((h, i) => obj[h] = (r[i] || '').trim());
             return obj;
         }).filter(car => car.name);
     }
@@ -1366,12 +1580,23 @@
         return url;
     }
 
+    // 全域存儲車輛資料供 modal 使用
+    let allCarsData = [];
+
+    function getCarImages(car) {
+        // images 或 image 欄位皆支援多張圖（逗號、分號、換行皆可分隔）
+        const raw = car.images || car.image || '';
+        const urls = raw.split(/[,;\n\r]+/).map(u => toImageUrl(u.trim())).filter(Boolean);
+        return urls.length ? urls : [];
+    }
+
     function renderCars(cars) {
+        allCarsData = cars;
         const grid = document.getElementById('inventory-grid');
-        grid.innerHTML = cars.map(car => `
-            <div class="car-card animate-on-scroll">
+        grid.innerHTML = cars.map((car, idx) => `
+            <div class="car-card animate-on-scroll" data-car-idx="${idx}" style="cursor:pointer;">
                 <div class="car-image">
-                    <img src="${toImageUrl(car.image)}" alt="${car.name}" loading="lazy">
+                    <img src="${getCarImages(car)[0] || ''}" alt="${car.name}" loading="lazy">
                     ${car.badge ? `<span class="car-badge">${car.badge}</span>` : ''}
                 </div>
                 <div class="car-info">
@@ -1386,6 +1611,59 @@
             </div>
         `).join('');
         grid.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+        // 綁定點擊事件
+        grid.querySelectorAll('.car-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const idx = parseInt(card.dataset.carIdx);
+                openCarModal(allCarsData[idx]);
+            });
+        });
+    }
+
+    // ===== 車輛詳情 Modal =====
+    function openCarModal(car) {
+        const overlay = document.getElementById('car-modal-overlay');
+        const imgs = getCarImages(car);
+        const gallery = overlay.querySelector('.car-modal-gallery');
+        const dots = overlay.querySelector('.car-modal-dots');
+        const body = overlay.querySelector('.car-modal-body');
+
+        // 渲染圖片
+        gallery.innerHTML = imgs.map(src => `<img src="${src}" alt="${car.name}" loading="lazy">`).join('');
+
+        // 渲染小圓點
+        if (imgs.length > 1) {
+            dots.style.display = 'flex';
+            dots.innerHTML = imgs.map((_, i) => `<button class="car-modal-dot${i===0?' active':''}" data-idx="${i}"></button>`).join('');
+            // 圓點點擊
+            dots.querySelectorAll('.car-modal-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const i = parseInt(dot.dataset.idx);
+                    gallery.scrollTo({ left: gallery.clientWidth * i, behavior: 'smooth' });
+                });
+            });
+            // 滾動同步圓點
+            gallery.addEventListener('scroll', () => {
+                const idx = Math.round(gallery.scrollLeft / gallery.clientWidth);
+                dots.querySelectorAll('.car-modal-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+            });
+        } else {
+            dots.style.display = 'none';
+        }
+
+        // 渲染說明（換行轉 <br>）
+        const desc = car.description ? car.description.replace(/\r?\n/g, '<br>') : '';
+        body.innerHTML = desc ? `<div class="car-modal-desc">${desc}</div>` : '';
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCarModal() {
+        const overlay = document.getElementById('car-modal-overlay');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
     }
 
     // 優先從 Google Sheets 載入，失敗時 fallback 到本地 cars.json
@@ -1408,7 +1686,28 @@
             }
         });
     });
+    // Modal 關閉事件
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('car-modal-overlay');
+        overlay.querySelector('.car-modal-close').addEventListener('click', closeCarModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeCarModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeCarModal();
+        });
+    });
 </script>
+
+<!-- Car Detail Modal -->
+<div class="car-modal-overlay" id="car-modal-overlay">
+    <div class="car-modal">
+        <button class="car-modal-close"><i class="fas fa-times"></i></button>
+        <div class="car-modal-gallery"></div>
+        <div class="car-modal-dots"></div>
+        <div class="car-modal-body"></div>
+    </div>
+</div>
 
 </body>
 </html>

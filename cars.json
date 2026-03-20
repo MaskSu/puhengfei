@@ -4,9 +4,10 @@
     "name": "5 Series 540",
     "year": "2017年",
     "mileage": "7.8萬km",
-    "price": "電洽",
+    "price": "85.5萬",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_920335_02f77ca2-84e7-4dc7-b811-7f843d9b36d2.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "M Sport 套件、HUD 抬頭顯示器、Harman Kardon 音響、全景天窗、電動尾門、360度環景影像、LED 頭燈、原廠保養紀錄完整"
   },
   {
     "brand": "TOYOTA / 豐田",
@@ -15,7 +16,8 @@
     "mileage": "4.5萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_919243_83d175ce-3bd6-44c3-a174-d40ce0dc97d1.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "TSS 2.0 主動安全系統、iKey 免鑰匙、倒車影像、定速巡航、原廠保養紀錄完整、低里程一手車"
   },
   {
     "brand": "BENZ / 賓士",
@@ -24,7 +26,8 @@
     "mileage": "7.2萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_895733_f1a0c5e2-ffdd-423b-bf21-541fbb199e21.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "AMG Line 套件、COMAND 主機、雙區恆溫空調、電動座椅、定速巡航、原廠保養"
   },
   {
     "brand": "MAZDA / 馬自達",
@@ -33,7 +36,8 @@
     "mileage": "8.9萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_874828_f4f3d6bb-dd21-493f-972d-17635c5e4a61.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "BOSE 音響、HUD 抬頭顯示器、倒車影像、定速巡航、換檔撥片、LED 頭燈"
   },
   {
     "brand": "AUDI / 奧迪",
@@ -42,7 +46,8 @@
     "mileage": "15.9萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_862628_dea352b7-f426-4e3b-989c-bb4d031abb47.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "Quattro 四驅系統、全景天窗、皮革座椅、電動尾門、多功能方向盤"
   },
   {
     "brand": "BMW / 寶馬",
@@ -51,7 +56,8 @@
     "mileage": "7.9萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_856515_7412bd2a-ce20-4691-bfa5-11d27e886c1f.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "Executive 套件、後座娛樂系統、B&W 頂級音響、手勢控制、全車雷達、四區恆溫、按摩座椅"
   },
   {
     "brand": "VW / 福斯",
@@ -60,7 +66,8 @@
     "mileage": "9.8萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_854063_1a26c9b7-446c-4ae8-b820-f437b7290cd5.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "R-Line 套件、4MOTION 四驅、Digital Cockpit Pro 數位儀表、全景天窗、IQ.Light LED 矩陣頭燈"
   },
   {
     "brand": "BENZ / 賓士",
@@ -69,7 +76,8 @@
     "mileage": "13.3萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_845073_9d772e99-1d6d-4a05-af0b-cf871325bab2.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "V8 雙渦輪 476hp、AMG 跑車座椅、COMAND 主機、Burmester 音響、AMG 運動排氣管"
   },
   {
     "brand": "BMW / 寶馬",
@@ -78,6 +86,7 @@
     "mileage": "11.4萬km",
     "price": "電洽",
     "image": "https://usedcarimage.carnews.com/upload/CarImages/images/car_img_839768_702db5ea-bf7e-49e6-a58e-88c35f4d8371.jpg",
-    "badge": "Goo鑑定"
+    "badge": "Goo鑑定",
+    "description": "M Sport 套件、HK 音響、電動尾門、環景影像、LED 頭燈、定速巡航"
   }
 ]
