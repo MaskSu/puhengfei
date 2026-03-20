@@ -487,6 +487,14 @@
             font-size: 13px; color: var(--text-secondary);
         }
         .car-spec i { color: var(--gold); font-size: 12px; }
+        .car-price {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 15px; font-weight: 800;
+            color: #b8942e;
+            letter-spacing: 0.5px;
+            margin-left: auto;
+        }
+        .car-price i { color: #b8942e; font-size: 12px; }
         .car-footer {
             display: flex; justify-content: space-between; align-items: center;
             padding-top: 16px;
@@ -1372,7 +1380,7 @@
                     <div class="car-specs">
                         <span class="car-spec"><i class="fas fa-calendar"></i> ${car.year}</span>
                         <span class="car-spec"><i class="fas fa-tachometer-alt"></i> ${car.mileage}</span>
-                        <span class="car-spec"><i class="fas fa-map-marker-alt"></i> ${car.location}</span>
+                        <span class="car-price"><i class="fas fa-tag"></i> ${car.price || '電洽'}</span>
                     </div>
                 </div>
             </div>
