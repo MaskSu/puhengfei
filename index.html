@@ -568,9 +568,9 @@
             gap: 8px; margin-top: 32px;
         }
         .page-btn {
-            width: 42px; height: 42px;
+            width: 40px; height: 40px;
             border: 1px solid var(--dark-border);
-            border-radius: 10px;
+            border-radius: 50%;
             background: var(--dark-card);
             color: var(--text-secondary);
             font-size: 14px; font-weight: 500;
@@ -593,6 +593,11 @@
         }
         .page-btn:disabled:hover { background: var(--dark-card); border-color: var(--dark-border); color: var(--text-secondary); }
         .page-btn.arrow { font-size: 16px; }
+        .page-ellipsis {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); font-size: 14px; letter-spacing: 2px;
+        }
         .car-card {
             background: var(--dark-card);
             border: 1px solid var(--dark-border);
@@ -1993,9 +1998,22 @@
         if (totalPages <= 1) { wrap.innerHTML = ''; return; }
 
         let html = `<button class="page-btn arrow" data-page="${currentPage - 1}" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
-        for (let i = 1; i <= totalPages; i++) {
-            html += `<button class="page-btn${i===currentPage?' active':''}" data-page="${i}">${i}</button>`;
+        // 計算要顯示的頁碼：當前頁前後各2頁，共5個，其餘用 ... 省略
+        const pages = [];
+        const range = 2;
+        let start = Math.max(1, currentPage - range);
+        let end = Math.min(totalPages, currentPage + range);
+        if (end - start < range * 2) {
+            if (start === 1) end = Math.min(totalPages, start + range * 2);
+            else if (end === totalPages) start = Math.max(1, end - range * 2);
         }
+        if (start > 1) { pages.push(1); if (start > 2) pages.push('...'); }
+        for (let i = start; i <= end; i++) pages.push(i);
+        if (end < totalPages) { if (end < totalPages - 1) pages.push('...'); pages.push(totalPages); }
+        pages.forEach(p => {
+            if (p === '...') { html += `<span class="page-ellipsis">···</span>`; }
+            else { html += `<button class="page-btn${p===currentPage?' active':''}" data-page="${p}">${p}</button>`; }
+        });
         html += `<button class="page-btn arrow" data-page="${currentPage + 1}" ${currentPage===totalPages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
         wrap.innerHTML = html;
 
