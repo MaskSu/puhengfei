@@ -2067,28 +2067,39 @@
     function openCarModal(car) {
         const overlay = document.getElementById('car-modal-overlay');
         const imgs = getCarImages(car);
-        const gallery = overlay.querySelector('.car-modal-gallery');
+        const oldGallery = overlay.querySelector('.car-modal-gallery');
         const dots = overlay.querySelector('.car-modal-dots');
         const body = overlay.querySelector('.car-modal-body');
 
+        // 用新元素替換，清除所有舊的事件監聽器
+        const gallery = oldGallery.cloneNode(false);
+        oldGallery.parentNode.replaceChild(gallery, oldGallery);
+
         // 渲染圖片
         gallery.innerHTML = imgs.map(src => `<img src="${src}" alt="${car.name}" loading="lazy">`).join('');
+        gallery.scrollLeft = 0;
 
         // 渲染小圓點
         if (imgs.length > 1) {
             dots.style.display = 'flex';
             dots.innerHTML = imgs.map((_, i) => `<button class="car-modal-dot${i===0?' active':''}" data-idx="${i}"></button>`).join('');
-            // 圓點點擊
+            // 圓點點擊：用第一張圖的實際寬度計算
             dots.querySelectorAll('.car-modal-dot').forEach(dot => {
                 dot.addEventListener('click', () => {
                     const i = parseInt(dot.dataset.idx);
-                    gallery.scrollTo({ left: gallery.clientWidth * i, behavior: 'smooth' });
+                    const imgW = gallery.querySelector('img').offsetWidth || gallery.clientWidth;
+                    gallery.scrollTo({ left: imgW * i, behavior: 'smooth' });
                 });
             });
-            // 滾動同步圓點
+            // 滾動同步圓點（加 debounce 避免連續觸發）
+            let scrollTimer;
             gallery.addEventListener('scroll', () => {
-                const idx = Math.round(gallery.scrollLeft / gallery.clientWidth);
-                dots.querySelectorAll('.car-modal-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    const imgW = gallery.querySelector('img').offsetWidth || gallery.clientWidth;
+                    const idx = Math.round(gallery.scrollLeft / imgW);
+                    dots.querySelectorAll('.car-modal-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+                }, 50);
             });
         } else {
             dots.style.display = 'none';
