@@ -420,11 +420,179 @@
         .inventory {
             background: var(--dark-surface);
         }
+        .inventory-filters {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            margin-bottom: 28px;
+            align-items: center;
+        }
+        /* 自訂下拉元件 */
+        .custom-select {
+            position: relative;
+            min-width: 160px;
+        }
+        .custom-select-trigger {
+            padding: 11px 38px 11px 16px;
+            border: 1px solid var(--dark-border);
+            border-radius: 10px;
+            background: var(--dark-card);
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+        .custom-select-trigger::after {
+            content: '';
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--gold);
+            transition: transform 0.3s;
+        }
+        .custom-select.open .custom-select-trigger {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+        }
+        .custom-select.open .custom-select-trigger::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .custom-select-trigger:hover {
+            border-color: rgba(201,168,76,0.4);
+        }
+        .custom-select-trigger .trigger-label {
+            color: var(--text-muted); font-size: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+            display: block; margin-bottom: 2px;
+        }
+        .custom-select-trigger .trigger-value {
+            display: block; font-weight: 600;
+        }
+        .custom-select-dropdown {
+            display: none;
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 10px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            z-index: 100;
+            max-height: 240px;
+            overflow-y: auto;
+            padding: 6px;
+        }
+        .custom-select.open .custom-select-dropdown { display: block; }
+        .custom-select-dropdown::-webkit-scrollbar { width: 4px; }
+        .custom-select-dropdown::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+        .custom-select-option {
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .custom-select-option:hover {
+            background: rgba(201,168,76,0.08);
+            color: var(--text-primary);
+        }
+        .custom-select-option.selected {
+            background: rgba(201,168,76,0.12);
+            color: var(--gold);
+            font-weight: 600;
+        }
+        /* 年份起迄組 */
+        .year-range {
+            display: flex; align-items: center; gap: 6px;
+        }
+        .year-range .range-sep {
+            color: var(--text-muted); font-size: 13px;
+        }
+        .year-range .custom-select { min-width: 120px; }
+        /* 重置按鈕 */
+        .filter-reset {
+            padding: 11px 20px;
+            border: 1px solid var(--dark-border);
+            border-radius: 10px;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-reset:hover {
+            border-color: var(--gold); color: var(--gold);
+            background: rgba(201,168,76,0.05);
+        }
+        /* 搜尋結果計數 */
+        .inventory-count {
+            margin-left: auto;
+            padding: 8px 18px;
+            background: rgba(201,168,76,0.08);
+            border: 1px solid rgba(201,168,76,0.15);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        /* 無結果提示 */
+        .inventory-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .inventory-empty i {
+            font-size: 56px;
+            color: rgba(201,168,76,0.2);
+            margin-bottom: 16px;
+        }
+        .inventory-empty p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .inventory-empty .empty-hint {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
         .inventory-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 28px;
         }
+        .inventory-pagination {
+            display: flex; justify-content: center; align-items: center;
+            gap: 8px; margin-top: 32px;
+        }
+        .page-btn {
+            width: 42px; height: 42px;
+            border: 1px solid var(--dark-border);
+            border-radius: 10px;
+            background: var(--dark-card);
+            color: var(--text-secondary);
+            font-size: 14px; font-weight: 500;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .page-btn:hover {
+            border-color: var(--gold); color: var(--gold);
+            background: rgba(201,168,76,0.08);
+        }
+        .page-btn.active {
+            background: var(--gold); color: #fff;
+            border-color: var(--gold); font-weight: 700;
+            box-shadow: 0 4px 12px rgba(201,168,76,0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .page-btn:disabled {
+            opacity: 0.3; cursor: not-allowed;
+        }
+        .page-btn:disabled:hover { background: var(--dark-card); border-color: var(--dark-border); color: var(--text-secondary); }
+        .page-btn.arrow { font-size: 16px; }
         .car-card {
             background: var(--dark-card);
             border: 1px solid var(--dark-border);
@@ -873,6 +1041,22 @@
         .map-section iframe {
             width: 100%; height: 100%; border: none;
         }
+        .map-nav-wrap {
+            text-align: center;
+            padding: 24px 20px;
+            background: var(--dark-bg);
+        }
+        .map-nav-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #fff;
+            padding: 14px 32px; border-radius: 8px;
+            font-size: 15px; font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .map-nav-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -956,8 +1140,10 @@
         .float-btn.line { background: #06c755; }
         .float-btn.fb { background: #1877f2; }
         .float-btn.ig { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
+        .float-btn.tiktok { background: #010101; }
         .float-btn.phone { background: var(--gold); }
         .float-btn.email { background: #4a5568; }
+        .float-btn.map { background: #ea4335; }
         @media (max-width: 768px) {
             .float-sidebar { right: 10px; top: 18%; bottom: auto; }
             .float-btn { width: 42px; height: 42px; font-size: 19px; }
@@ -1023,25 +1209,30 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .services-grid, .testimonials-grid { grid-template-columns: 1fr; }
             .inventory-grid {
-                display: flex;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
+                display: grid;
+                grid-template-columns: 1fr;
                 gap: 16px;
-                padding-bottom: 12px;
             }
-            .inventory-grid::-webkit-scrollbar { height: 4px; }
-            .inventory-grid::-webkit-scrollbar-track { background: transparent; }
-            .inventory-grid::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
-            .inventory-grid .car-card {
-                min-width: 75%;
-                max-width: 75%;
-                flex-shrink: 0;
-                scroll-snap-align: start;
+            .inventory-filters {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .custom-select { min-width: 0; }
+            .custom-select-trigger { padding: 9px 32px 9px 12px; font-size: 13px; }
+            .custom-select-trigger .trigger-label { font-size: 9px; }
+            .custom-select-trigger .trigger-value { font-size: 13px; }
+            .year-range { grid-column: 1 / -1; display: flex; }
+            .year-range .custom-select { min-width: 0; flex: 1; }
+            .filter-reset { font-size: 12px; padding: 9px 14px; grid-column: 1 / -1; }
+            .inventory-count {
+                margin-left: 0;
+                text-align: center;
+                grid-column: 1 / -1;
             }
             .why-grid { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; }
+            .footer-grid { display: none; }
             .form-row { grid-template-columns: 1fr; }
             .stat-number { font-size: 36px; }
             .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
@@ -1094,7 +1285,7 @@
             <img src="fwdlogo/logo.png" alt="蒲恆菲車業">
             <div>
                 <div class="logo-text">蒲恆菲車業</div>
-                <div class="logo-sub">PU HENG FEI AUTO</div>
+                <div class="logo-sub">PUHENGFEI</div>
             </div>
         </a>
         <ul class="nav-links">
@@ -1175,7 +1366,7 @@
         <div class="about-grid">
             <div class="about-image animate-on-scroll">
                 <div class="about-image-placeholder">
-                    <img src="https://usedcarimage.carnews.com/upload/ShopImages/images/si_img_2374_f4586475-eaeb-46ff-9fc2-06c5df528231.jpg" alt="蒲恆菲車業展示廳">
+                    <img src="2025-12-07.webp" alt="蒲恆菲車業展示廳" style="opacity: 0.88;">
                 </div>
             </div>
             <div class="about-text animate-on-scroll">
@@ -1244,10 +1435,19 @@
             <h2 class="section-title">在庫車輛</h2>
             <div class="section-line"></div>
         </div>
-        <div class="inventory-grid" id="inventory-grid">
-            <!-- 車輛由 cars.json 動態載入 -->
+        <div class="inventory-filters" id="inventory-filters">
+            <div class="custom-select" id="filter-brand" data-placeholder="所有廠牌" data-label="廠牌"></div>
+            <div class="custom-select" id="filter-price" data-placeholder="所有價格" data-label="價格"></div>
+            <div class="year-range">
+                <div class="custom-select" id="filter-year-from" data-placeholder="起始年份" data-label="年份起"></div>
+                <span class="range-sep">~</span>
+                <div class="custom-select" id="filter-year-to" data-placeholder="結束年份" data-label="年份迄"></div>
             </div>
+            <button class="filter-reset" id="filter-reset"><i class="fas fa-undo"></i> 重置</button>
+            <span class="inventory-count" id="inventory-count"></span>
         </div>
+        <div class="inventory-grid" id="inventory-grid"></div>
+        <div class="inventory-pagination" id="inventory-pagination"></div>
     </div>
 </section>
 
@@ -1385,6 +1585,7 @@
                 <div class="contact-social">
                     <a href="https://www.facebook.com/p/%E6%86%B2%E6%86%B2-l-%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD-100064702431090/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://www.instagram.com/explore/locations/111778700975486/l/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/tag/%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
                     <a href="https://line.me/ti/p/~a791201" target="_blank" class="social-btn"><i class="fab fa-line"></i></a>
                     <a href="tel:0938512236" class="social-btn"><i class="fas fa-phone"></i></a>
                 </div>
@@ -1396,6 +1597,9 @@
 <!-- MAP -->
 <div class="map-section">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d120.2484!3d22.9341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e76e1e0e2e8c1%3A0x0!2zMjLCsDU2JzAyLjgiTiAxMjDCsDE0JzU0LjIiRQ!5e0!3m2!1szh-TW!2stw!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+<div class="map-nav-wrap">
+    <a href="https://maps.google.com/?q=台南市仁德區大同路三段202號" target="_blank" class="map-nav-btn"><i class="fas fa-map-marker-alt"></i> 導航至蒲恆菲車業</a>
 </div>
 
 <!-- FOOTER -->
@@ -1456,8 +1660,8 @@
     <a href="https://line.me/ti/p/~a791201" target="_blank" class="float-btn line" title="LINE"><i class="fab fa-line"></i></a>
     <a href="https://www.facebook.com/p/%E6%86%B2%E6%86%B2-l-%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD-100064702431090/" target="_blank" class="float-btn fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
     <a href="https://www.instagram.com/explore/locations/111778700975486/l/" target="_blank" class="float-btn ig" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/tag/%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" target="_blank" class="float-btn tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="tel:0938512236" class="float-btn phone" title="撥打電話"><i class="fas fa-phone"></i></a>
-    <a href="mailto:a0938512236@gmail.com" class="float-btn email" title="Email"><i class="fas fa-envelope"></i></a>
 </div>
 
 <script>
@@ -1580,44 +1784,257 @@
         return url;
     }
 
-    // 全域存儲車輛資料供 modal 使用
+    // 全域存儲車輛資料供篩選/分頁/modal 使用
     let allCarsData = [];
+    let filteredCars = [];
+    let currentPage = 1;
+
+    function isMobile() { return window.innerWidth <= 768; }
+    function getPerPage() { return isMobile() ? 6 : 12; }
 
     function getCarImages(car) {
-        // images 或 image 欄位皆支援多張圖（逗號、分號、換行皆可分隔）
         const raw = car.images || car.image || '';
         const urls = raw.split(/[,;\n\r]+/).map(u => toImageUrl(u.trim())).filter(Boolean);
         return urls.length ? urls : [];
     }
 
-    function renderCars(cars) {
-        allCarsData = cars;
-        const grid = document.getElementById('inventory-grid');
-        grid.innerHTML = cars.map((car, idx) => `
-            <div class="car-card animate-on-scroll" data-car-idx="${idx}" style="cursor:pointer;">
-                <div class="car-image">
-                    <img src="${getCarImages(car)[0] || ''}" alt="${car.name}" loading="lazy">
-                    ${car.badge ? `<span class="car-badge">${car.badge}</span>` : ''}
-                </div>
-                <div class="car-info">
-                    <div class="car-brand">${car.brand}</div>
-                    <div class="car-name">${car.name}</div>
-                    <div class="car-specs">
-                        <span class="car-spec"><i class="fas fa-calendar"></i> ${car.year}</span>
-                        <span class="car-spec"><i class="fas fa-tachometer-alt"></i> ${car.mileage}</span>
-                        <span class="car-price"><i class="fas fa-tag"></i> ${car.price || '電洽'}</span>
-                    </div>
-                </div>
+    // 從價格字串提取數字（萬）
+    function extractPrice(str) {
+        if (!str) return null;
+        const m = str.match(/([\d.]+)/);
+        return m ? parseFloat(m[1]) : null;
+    }
+
+    // 從年份字串提取數字
+    function extractYear(str) {
+        if (!str) return null;
+        const m = str.match(/(\d{4})/);
+        return m ? parseInt(m[1]) : null;
+    }
+
+    // ===== 自訂下拉選單元件 =====
+    function createCustomSelect(container, options, onChange) {
+        const label = container.dataset.label || '';
+        const placeholder = container.dataset.placeholder || '請選擇';
+        container._value = '';
+        container._onChange = onChange;
+
+        container.innerHTML = `
+            <div class="custom-select-trigger">
+                <span class="trigger-label">${label}</span>
+                <span class="trigger-value">${placeholder}</span>
             </div>
-        `).join('');
+            <div class="custom-select-dropdown">
+                ${options.map(o => `<div class="custom-select-option${o.value===''?' selected':''}" data-value="${o.value}">${o.text}</div>`).join('')}
+            </div>`;
+
+        const trigger = container.querySelector('.custom-select-trigger');
+        const dropdown = container.querySelector('.custom-select-dropdown');
+        const valueSpan = trigger.querySelector('.trigger-value');
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // 關閉其他
+            document.querySelectorAll('.custom-select.open').forEach(s => { if (s !== container) s.classList.remove('open'); });
+            container.classList.toggle('open');
+        });
+
+        dropdown.querySelectorAll('.custom-select-option').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const val = opt.dataset.value;
+                container._value = val;
+                valueSpan.textContent = val ? opt.textContent : placeholder;
+                dropdown.querySelectorAll('.custom-select-option').forEach(o => o.classList.toggle('selected', o === opt));
+                container.classList.remove('open');
+                if (onChange) onChange(val);
+            });
+        });
+
+        // 取值/設值
+        Object.defineProperty(container, 'value', {
+            get() { return container._value; },
+            set(v) {
+                container._value = v;
+                const opt = dropdown.querySelector(`[data-value="${v}"]`);
+                valueSpan.textContent = (opt && v) ? opt.textContent : placeholder;
+                dropdown.querySelectorAll('.custom-select-option').forEach(o => o.classList.toggle('selected', o.dataset.value === v));
+            }
+        });
+    }
+
+    // 點擊外部關閉
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select.open').forEach(s => s.classList.remove('open'));
+    });
+
+    // 初始化篩選器選項
+    function initFilters(cars) {
+        // 廠牌
+        const brands = [...new Set(cars.map(c => c.brand).filter(Boolean))].sort();
+        createCustomSelect(
+            document.getElementById('filter-brand'),
+            [{ value: '', text: '所有廠牌' }, ...brands.map(b => ({ value: b, text: b }))],
+            () => applyFilters()
+        );
+
+        // 年份起迄
+        const years = cars.map(c => extractYear(c.year)).filter(Boolean);
+        const minY = 2000;
+        const maxY = years.length ? Math.max(...years) : new Date().getFullYear();
+        const yearOpts = [{ value: '', text: '不限' }];
+        for (let y = maxY; y >= minY; y--) yearOpts.push({ value: String(y), text: y + '年' });
+
+        createCustomSelect(document.getElementById('filter-year-from'), yearOpts, () => applyFilters());
+        createCustomSelect(document.getElementById('filter-year-to'), yearOpts, () => applyFilters());
+
+        // 價格
+        createCustomSelect(
+            document.getElementById('filter-price'),
+            [
+                { value: '', text: '所有價格' },
+                { value: '0-50', text: '50萬以下' },
+                { value: '51-100', text: '51-100萬' },
+                { value: '101-150', text: '101-150萬' },
+                { value: '151-', text: '151萬以上' }
+            ],
+            () => applyFilters()
+        );
+    }
+
+    // 執行篩選
+    function applyFilters() {
+        const brand = document.getElementById('filter-brand').value;
+        const yearFrom = document.getElementById('filter-year-from').value;
+        const yearTo = document.getElementById('filter-year-to').value;
+        const price = document.getElementById('filter-price').value;
+
+        filteredCars = allCarsData.filter(car => {
+            if (brand && car.brand !== brand) return false;
+            const carYear = extractYear(car.year);
+            if (yearFrom && carYear && carYear < parseInt(yearFrom)) return false;
+            if (yearTo && carYear && carYear > parseInt(yearTo)) return false;
+            if (price) {
+                const p = extractPrice(car.price);
+                if (p === null) return true;
+                const [lo, hi] = price.split('-').map(Number);
+                if (hi && (p < lo || p > hi)) return false;
+                if (!hi && p < lo) return false;
+            }
+            return true;
+        });
+
+        currentPage = 1;
+        renderPage();
+    }
+
+    // 渲染當前頁面
+    function renderPage() {
+        const perPage = getPerPage();
+        const totalPages = Math.max(1, Math.ceil(filteredCars.length / perPage));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const start = (currentPage - 1) * perPage;
+        const pageCars = filteredCars.slice(start, start + perPage);
+
+        const grid = document.getElementById('inventory-grid');
+
+        if (pageCars.length === 0) {
+            grid.innerHTML = `
+                <div class="inventory-empty">
+                    <i class="fas fa-search"></i>
+                    <p>找不到符合條件的車輛</p>
+                    <p class="empty-hint">請調整篩選條件或按「重置」查看全部車輛</p>
+                </div>`;
+        } else {
+            grid.innerHTML = pageCars.map((car) => {
+                const globalIdx = allCarsData.indexOf(car);
+                return `
+                <div class="car-card animate-on-scroll" data-car-idx="${globalIdx}" style="cursor:pointer;">
+                    <div class="car-image">
+                        <img src="${getCarImages(car)[0] || ''}" alt="${car.name}" loading="lazy">
+                        ${car.badge ? `<span class="car-badge">${car.badge}</span>` : ''}
+                    </div>
+                    <div class="car-info">
+                        <div class="car-brand">${car.brand}</div>
+                        <div class="car-name">${car.name}</div>
+                        <div class="car-specs">
+                            <span class="car-spec"><i class="fas fa-calendar"></i> ${car.year}</span>
+                            <span class="car-spec"><i class="fas fa-tachometer-alt"></i> ${car.mileage}</span>
+                            <span class="car-price"><i class="fas fa-tag"></i> ${car.price || '電洽'}</span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // 動畫觀察
         grid.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
-        // 綁定點擊事件
+        // 點擊彈窗
         grid.querySelectorAll('.car-card').forEach(card => {
             card.addEventListener('click', () => {
                 const idx = parseInt(card.dataset.carIdx);
                 openCarModal(allCarsData[idx]);
             });
+        });
+
+        // 車輛數量
+        const countEl = document.getElementById('inventory-count');
+        countEl.innerHTML = `<i class="fas fa-car" style="margin-right:6px;"></i> 共 <strong>${filteredCars.length}</strong> 輛`;
+
+        // 分頁
+        renderPagination(totalPages);
+    }
+
+    // 渲染分頁按鈕
+    function renderPagination(totalPages) {
+        const wrap = document.getElementById('inventory-pagination');
+        if (totalPages <= 1) { wrap.innerHTML = ''; return; }
+
+        let html = `<button class="page-btn arrow" data-page="${currentPage - 1}" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
+        for (let i = 1; i <= totalPages; i++) {
+            html += `<button class="page-btn${i===currentPage?' active':''}" data-page="${i}">${i}</button>`;
+        }
+        html += `<button class="page-btn arrow" data-page="${currentPage + 1}" ${currentPage===totalPages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
+        wrap.innerHTML = html;
+
+        wrap.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const p = parseInt(btn.dataset.page);
+                if (p < 1 || p > totalPages || p === currentPage) return;
+                currentPage = p;
+                renderPage();
+                // scroll 到篩選器上方
+                document.getElementById('inventory-filters').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    }
+
+    // 初始化資料載入完成後
+    function initInventory(cars) {
+        allCarsData = cars;
+        filteredCars = [...cars];
+        initFilters(cars);
+        renderPage();
+
+        // 重置按鈕
+        document.getElementById('filter-reset').addEventListener('click', () => {
+            document.getElementById('filter-brand').value = '';
+            document.getElementById('filter-year-from').value = '';
+            document.getElementById('filter-year-to').value = '';
+            document.getElementById('filter-price').value = '';
+            applyFilters();
+        });
+
+        // 視窗大小切換時重算分頁
+        let prevMobile = isMobile();
+        window.addEventListener('resize', () => {
+            const nowMobile = isMobile();
+            if (nowMobile !== prevMobile) {
+                prevMobile = nowMobile;
+                renderPage();
+            }
         });
     }
 
@@ -1669,11 +2086,11 @@
     // 優先從 Google Sheets 載入，失敗時 fallback 到本地 cars.json
     fetch(SHEET_CSV)
         .then(r => { if (!r.ok) throw new Error('Sheet fetch failed'); return r.text(); })
-        .then(csv => renderCars(parseCSV(csv)))
+        .then(csv => initInventory(parseCSV(csv)))
         .catch(() => {
             fetch('cars.json')
                 .then(r => r.json())
-                .then(cars => renderCars(cars));
+                .then(cars => initInventory(cars));
         });
 
     // Smooth scroll for nav links
