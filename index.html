@@ -570,36 +570,38 @@
             gap: 4px; margin-top: 32px; flex-wrap: nowrap;
         }
         .page-btn {
-            width: 34px; height: 34px;
-            border: 1px solid var(--dark-border);
+            width: 28px; height: 28px;
+            border: none;
             border-radius: 50%;
-            background: var(--dark-card);
+            background: transparent;
             color: var(--text-secondary);
-            font-size: 13px; font-weight: 500;
+            font-size: 12px; font-weight: 500;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.3s;
             flex-shrink: 0;
         }
         .page-btn:hover {
-            border-color: var(--gold); color: var(--gold);
+            color: var(--gold);
             background: rgba(201,168,76,0.08);
         }
         .page-btn.active {
             background: var(--gold); color: #fff;
-            border-color: var(--gold); font-weight: 700;
-            box-shadow: 0 4px 12px rgba(201,168,76,0.3);
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(201,168,76,0.3);
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
         .page-btn:disabled {
             opacity: 0.3; cursor: not-allowed;
         }
-        .page-btn:disabled:hover { background: var(--dark-card); border-color: var(--dark-border); color: var(--text-secondary); }
-        .page-btn.arrow { font-size: 14px; }
+        .page-btn:disabled:hover { background: transparent; color: var(--text-secondary); }
+        .page-btn.arrow { font-size: 12px; border: 1px solid var(--dark-border); background: var(--dark-card); }
+        .page-btn.arrow:hover { border-color: var(--gold); }
         .page-ellipsis {
-            width: 24px; height: 34px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-secondary); font-size: 13px; letter-spacing: 1px;
+            width: 16px; height: 28px;
+            display: flex; align-items: flex-end; justify-content: center;
+            color: var(--text-secondary); font-size: 10px; letter-spacing: 1px;
+            padding-bottom: 2px;
         }
         .car-card {
             background: var(--dark-card);
