@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>蒲恆菲車業 後台管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --gold: #9c7c38;
+  --gold-light: #d4a574;
+  --gold-bg: rgba(156,124,56,0.08);
+  --gold-border: rgba(156,124,56,0.2);
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text-primary: #1a202c;
+  --text-secondary: #6b7280;
+  --danger: #ef4444;
+  --danger-bg: rgba(239,68,68,0.08);
+  --success: #22c55e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { overflow-x: hidden; }
+body {
+  font-family: 'Noto Sans TC', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== HEADER ===== */
+.admin-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.admin-header h1 {
+  font-size: 17px; font-weight: 700;
+  color: var(--text-primary);
+  display: flex; align-items: center; gap: 8px;
+}
+.admin-header h1 i { color: var(--gold); font-size: 18px; }
+.header-user {
+  font-size: 11px; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 6px;
+}
+.header-user i { color: var(--success); }
+
+/* ===== CONTENT ===== */
+.admin-content { padding: 16px; max-width: 800px; margin: 0 auto; }
+
+/* ===== ADD BUTTON ===== */
+.add-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px;
+  background: var(--gold); color: #fff;
+  border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; margin-bottom: 16px;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+.add-btn:active { transform: scale(0.98); }
+
+/* ===== CAR LIST ===== */
+.car-list { display: flex; flex-direction: column; gap: 12px; }
+
+.car-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.car-item-main {
+  display: flex; gap: 12px; padding: 12px;
+  cursor: pointer;
+}
+.car-item-thumb {
+  width: 90px; height: 68px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.car-item-thumb.no-img {
+  display: flex; align-items: center; justify-content: center;
+  color: #ccc; font-size: 24px;
+}
+.car-item-info { flex: 1; min-width: 0; }
+.car-item-brand {
+  font-size: 11px; color: var(--gold);
+  font-weight: 600; margin-bottom: 2px;
+}
+.car-item-name {
+  font-size: 15px; font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.car-item-meta {
+  display: flex; gap: 8px; margin-top: 4px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.car-item-meta span {
+  display: flex; align-items: center; gap: 3px;
+}
+.car-item-actions {
+  display: flex; border-top: 1px solid var(--border);
+}
+.car-item-actions button {
+  flex: 1; padding: 10px;
+  background: none; border: none;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background 0.2s;
+}
+.car-item-actions button:first-child {
+  color: var(--gold);
+  border-right: 1px solid var(--border);
+}
+.car-item-actions button:last-child { color: var(--danger); }
+.car-item-actions button:active { background: var(--bg); }
+
+/* ===== FORM MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--card);
+  border-radius: 20px 20px 0 0;
+  width: 100%; max-width: 800px;
+  max-height: 92vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.modal-header {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--card);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h2 { font-size: 17px; font-weight: 700; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg); border: none;
+  font-size: 16px; color: var(--text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.modal-body { padding: 20px; }
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); margin-bottom: 6px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px; font-family: inherit;
+  color: var(--text-primary);
+  background: var(--card);
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-bg);
+}
+.form-textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+
+/* ===== IMAGE UPLOAD ===== */
+.image-upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.image-upload-area:active,
+.image-upload-area.dragover {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+}
+.image-upload-area i { font-size: 28px; color: var(--gold); margin-bottom: 8px; }
+.image-upload-area p { font-size: 13px; color: var(--text-secondary); }
+.image-upload-area input { display: none; }
+
+.image-preview-list {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-top: 12px;
+}
+.image-preview-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.image-preview-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.image-preview-item .remove-img {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px;
+  background: rgba(0,0,0,0.6); color: #fff;
+  border: none; border-radius: 50%;
+  font-size: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.image-preview-item .img-order {
+  position: absolute; bottom: 4px; left: 4px;
+  width: 20px; height: 20px;
+  background: var(--gold); color: #fff;
+  border-radius: 50%; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.upload-progress {
+  margin-top: 8px; padding: 8px 12px;
+  background: var(--gold-bg);
+  border-radius: 8px;
+  font-size: 12px; color: var(--gold);
+  display: none; align-items: center; gap: 8px;
+}
+.upload-progress.show { display: flex; }
+.upload-progress .spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--gold-border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== SUBMIT ===== */
+.form-submit {
+  width: 100%; padding: 14px;
+  background: var(--gold); color: #fff;
+  border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; margin-top: 8px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.form-submit:disabled {
+  opacity: 0.5; cursor: not-allowed;
+}
+.form-submit:active:not(:disabled) { transform: scale(0.98); }
+
+/* ===== DELETE CONFIRM ===== */
+.confirm-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 300;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.confirm-overlay.open { display: flex; }
+.confirm-box {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%; max-width: 340px;
+  text-align: center;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } }
+.confirm-box i { font-size: 40px; color: var(--danger); margin-bottom: 12px; }
+.confirm-box h3 { font-size: 17px; margin-bottom: 6px; }
+.confirm-box p { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+.confirm-actions { display: flex; gap: 10px; }
+.confirm-actions button {
+  flex: 1; padding: 12px; border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+}
+.btn-cancel { background: var(--bg); color: var(--text-primary); }
+.btn-danger { background: var(--danger); color: #fff; }
+
+/* ===== LOADING ===== */
+.loading {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 20px; gap: 12px;
+}
+.loading .spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loading p { font-size: 14px; color: var(--text-secondary); }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center; padding: 60px 20px;
+}
+.empty-state i { font-size: 48px; color: #ddd; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; color: var(--text-secondary); }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+  background: var(--text-primary); color: #fff;
+  padding: 10px 20px; border-radius: 10px;
+  font-size: 14px; font-weight: 500;
+  z-index: 999; opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
+
+/* ===== BADGE TAGS ===== */
+.badge-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.badge-tag {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px; cursor: pointer;
+  transition: all 0.2s;
+  background: var(--card);
+  color: var(--text-secondary);
+}
+.badge-tag.active {
+  background: var(--gold-bg);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ===== EXISTING IMAGES ===== */
+.existing-images {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-bottom: 12px;
+}
+.existing-img-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+.existing-img-item img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.existing-img-item .remove-img {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px;
+  background: rgba(239,68,68,0.85); color: #fff;
+  border: none; border-radius: 50%;
+  font-size: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="admin-header">
+  <h1><i class="fas fa-car"></i> 蒲恆菲車業</h1>
+  <span class="header-user" id="header-user"><i class="fas fa-circle"></i> 載入中...</span>
+</header>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CONTENT -->
+<div class="admin-content">
+  <button class="add-btn" onclick="openForm()"><i class="fas fa-plus"></i> 新增車輛</button>
+  <div id="car-list" class="car-list">
+    <div class="loading"><div class="spinner"></div><p>載入車輛資料中...</p></div>
+  </div>
+</div>
+
+<!-- CAR FORM MODAL -->
+<div class="modal-overlay" id="form-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="form-title">新增車輛</h2>
+      <button class="modal-close" onclick="closeForm()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="car-form" onsubmit="return handleSubmit(event)">
+        <input type="hidden" id="edit-row" value="">
+
+        <div class="form-group">
+          <label class="form-label">廠牌</label>
+          <input class="form-input" id="f-brand" placeholder="例：TOYOTA / 豐田" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">車名</label>
+          <input class="form-input" id="f-name" placeholder="例：Corolla Sport 2.0" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">年份</label>
+            <input class="form-input" id="f-year" placeholder="例：2021年">
+          </div>
+          <div class="form-group">
+            <label class="form-label">里程</label>
+            <input class="form-input" id="f-mileage" placeholder="例：4.5萬km">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">價格</label>
+            <input class="form-input" id="f-price" placeholder="例：85.5萬 或 電洽">
+          </div>
+          <div class="form-group">
+            <label class="form-label">標籤</label>
+            <input class="form-input" id="f-badge" placeholder="例：Goo鑑定">
+            <div class="badge-tags">
+              <span class="badge-tag" onclick="setBadge(this)">Goo鑑定</span>
+              <span class="badge-tag" onclick="setBadge(this)">HOT</span>
+              <span class="badge-tag" onclick="setBadge(this)">新到車</span>
+              <span class="badge-tag" onclick="setBadge(this)">特價</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">車輛描述</label>
+          <textarea class="form-textarea" id="f-description" placeholder="輸入車輛配備、特色描述..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">車輛照片</label>
+          <!-- 既有圖片（編輯模式）-->
+          <div class="existing-images" id="existing-images"></div>
+          <!-- 上傳新圖片 -->
+          <div class="image-upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+            <i class="fas fa-camera"></i>
+            <p>點擊拍照或選擇照片</p>
+            <input type="file" id="file-input" accept="image/*" multiple>
+          </div>
+          <div class="image-preview-list" id="image-previews"></div>
+          <div class="upload-progress" id="upload-progress">
+            <div class="spinner"></div>
+            <span id="upload-text">上傳中...</span>
+          </div>
+        </div>
+
+        <button type="submit" class="form-submit" id="submit-btn">
+          <i class="fas fa-save"></i> 儲存車輛
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="confirm-overlay" id="confirm-modal">
+  <div class="confirm-box">
+    <i class="fas fa-exclamation-triangle"></i>
+    <h3>確定要刪除嗎？</h3>
+    <p id="confirm-text">刪除後無法復原</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">取消</button>
+      <button class="btn-danger" id="confirm-delete-btn">確定刪除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let allCars = [];
+let pendingFiles = []; // 待上傳的新圖片 { file, preview, uploaded: false, url: '' }
+let existingUrls = []; // 編輯模式下的既有圖片 URL
+let deleteRowTarget = null;
+
+// ===== INIT =====
+loadCars();
+loadUser();
+
+function loadUser() {
+  google.script.run
+    .withSuccessHandler(email => {
+      document.getElementById('header-user').innerHTML =
+        '<i class="fas fa-circle"></i> ' + email;
+    })
+    .getCurrentUser();
+}
+
+function loadCars() {
+  document.getElementById('car-list').innerHTML =
+    '<div class="loading"><div class="spinner"></div><p>載入車輛資料中...</p></div>';
+
+  google.script.run
+    .withSuccessHandler(cars => {
+      allCars = cars;
+      renderCarList();
+    })
+    .withFailureHandler(err => {
+      document.getElementById('car-list').innerHTML =
+        '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>載入失敗：' + err.message + '</p></div>';
+    })
+    .getCars();
+}
+
+// ===== RENDER CAR LIST =====
+function renderCarList() {
+  const list = document.getElementById('car-list');
+
+  if (!allCars.length) {
+    list.innerHTML = '<div class="empty-state"><i class="fas fa-car-side"></i><p>尚無車輛資料，點擊上方按鈕新增</p></div>';
+    return;
+  }
+
+  list.innerHTML = allCars.map(car => {
+    const imgs = getImageUrls(car.image);
+    const thumbUrl = imgs.length ? toDisplayUrl(imgs[0]) : '';
+
+    return `
+      <div class="car-item">
+        <div class="car-item-main" onclick="openForm(${car._row})">
+          ${thumbUrl
+            ? `<img class="car-item-thumb" src="${thumbUrl}" alt="${car.name}" onerror="this.classList.add('no-img');this.outerHTML='<div class=\\'car-item-thumb no-img\\'><i class=\\'fas fa-image\\'></i></div>'">`
+            : `<div class="car-item-thumb no-img"><i class="fas fa-image"></i></div>`
+          }
+          <div class="car-item-info">
+            <div class="car-item-brand">${car.brand || ''}</div>
+            <div class="car-item-name">${car.name || '未命名'}</div>
+            <div class="car-item-meta">
+              <span><i class="fas fa-calendar"></i> ${car.year || '-'}</span>
+              <span><i class="fas fa-road"></i> ${car.mileage || '-'}</span>
+              <span><i class="fas fa-tag"></i> ${car.price || '電洽'}</span>
+            </div>
+          </div>
+        </div>
+        <div class="car-item-actions">
+          <button onclick="openForm(${car._row})"><i class="fas fa-edit"></i> 編輯</button>
+          <button onclick="confirmDelete(${car._row}, '${(car.name||'').replace(/'/g,"\\'")}')"><i class="fas fa-trash-alt"></i> 刪除</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== IMAGE URL HELPERS =====
+function getImageUrls(imageField) {
+  if (!imageField) return [];
+  return imageField.split(/[,;\n\r]+/).map(u => u.trim()).filter(Boolean);
+}
+
+function toDisplayUrl(url) {
+  const patterns = [
+    /drive\.google\.com\/file\/d\/([^\/\?]+)/,
+    /drive\.google\.com\/open\?id=([^&]+)/,
+    /drive\.google\.com\/uc\?id=([^&]+)/,
+    /lh3\.googleusercontent\.com\/d\/([^=?]+)/
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return 'https://lh3.googleusercontent.com/d/' + m[1] + '=w400';
+  }
+  return url;
+}
+
+function extractFileId(url) {
+  const patterns = [
+    /drive\.google\.com\/file\/d\/([^\/\?]+)/,
+    /drive\.google\.com\/open\?id=([^&]+)/,
+    /drive\.google\.com\/uc\?id=([^&]+)/,
+    /lh3\.googleusercontent\.com\/d\/([^=?]+)/
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+// ===== OPEN FORM =====
+function openForm(rowNum) {
+  const isEdit = !!rowNum;
+  document.getElementById('form-title').textContent = isEdit ? '編輯車輛' : '新增車輛';
+  document.getElementById('edit-row').value = rowNum || '';
+  document.getElementById('submit-btn').innerHTML = isEdit
+    ? '<i class="fas fa-save"></i> 更新車輛'
+    : '<i class="fas fa-save"></i> 儲存車輛';
+
+  // 清除狀態
+  pendingFiles = [];
+  existingUrls = [];
+  document.getElementById('image-previews').innerHTML = '';
+  document.getElementById('upload-progress').classList.remove('show');
+  document.getElementById('file-input').value = '';
+
+  if (isEdit) {
+    const car = allCars.find(c => c._row === rowNum);
+    if (car) {
+      document.getElementById('f-brand').value = car.brand || '';
+      document.getElementById('f-name').value = car.name || '';
+      document.getElementById('f-year').value = car.year || '';
+      document.getElementById('f-mileage').value = car.mileage || '';
+      document.getElementById('f-price').value = car.price || '';
+      document.getElementById('f-badge').value = car.badge || '';
+      document.getElementById('f-description').value = car.description || '';
+
+      // 既有圖片
+      existingUrls = getImageUrls(car.image);
+      renderExistingImages();
+    }
+  } else {
+    document.getElementById('car-form').reset();
+  }
+
+  // 更新 badge tags
+  updateBadgeTags();
+
+  document.getElementById('form-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeForm() {
+  document.getElementById('form-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== EXISTING IMAGES (edit mode) =====
+function renderExistingImages() {
+  const container = document.getElementById('existing-images');
+  if (!existingUrls.length) { container.innerHTML = ''; return; }
+
+  container.innerHTML = existingUrls.map((url, i) => `
+    <div class="existing-img-item">
+      <img src="${toDisplayUrl(url)}" alt="Photo ${i+1}">
+      <button class="remove-img" onclick="removeExistingImage(${i})"><i class="fas fa-times"></i></button>
+    </div>
+  `).join('');
+}
+
+function removeExistingImage(idx) {
+  existingUrls.splice(idx, 1);
+  renderExistingImages();
+}
+
+// ===== FILE INPUT =====
+document.getElementById('file-input').addEventListener('change', function(e) {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      pendingFiles.push({
+        file: file,
+        preview: ev.target.result,
+        uploaded: false,
+        url: ''
+      });
+      renderPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  this.value = '';
+});
+
+function renderPreviews() {
+  const container = document.getElementById('image-previews');
+  container.innerHTML = pendingFiles.map((f, i) => `
+    <div class="image-preview-item">
+      <img src="${f.preview}" alt="Preview">
+      <button class="remove-img" onclick="removePending(${i})"><i class="fas fa-times"></i></button>
+      <span class="img-order">${existingUrls.length + i + 1}</span>
+    </div>
+  `).join('');
+}
+
+function removePending(idx) {
+  pendingFiles.splice(idx, 1);
+  renderPreviews();
+}
+
+// ===== BADGE TAGS =====
+function setBadge(el) {
+  document.getElementById('f-badge').value = el.textContent;
+  updateBadgeTags();
+}
+
+function updateBadgeTags() {
+  const val = document.getElementById('f-badge').value;
+  document.querySelectorAll('.badge-tag').forEach(t => {
+    t.classList.toggle('active', t.textContent === val);
+  });
+}
+document.getElementById('f-badge').addEventListener('input', updateBadgeTags);
+
+// ===== COMPRESS IMAGE =====
+function compressImage(dataUrl, maxWidth = 1200, quality = 0.8) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if (w > maxWidth) { h = (h * maxWidth) / w; w = maxWidth; }
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  });
+}
+
+// ===== SUBMIT FORM =====
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 處理中...';
+
+  try {
+    // 1. 上傳新圖片
+    const uploadedUrls = [];
+    if (pendingFiles.length) {
+      const progress = document.getElementById('upload-progress');
+      progress.classList.add('show');
+
+      for (let i = 0; i < pendingFiles.length; i++) {
+        document.getElementById('upload-text').textContent =
+          `上傳照片 ${i+1}/${pendingFiles.length}...`;
+
+        const compressed = await compressImage(pendingFiles[i].preview);
+        const fileName = 'car_' + Date.now() + '_' + i + '.jpg';
+
+        const result = await new Promise((resolve, reject) => {
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .uploadImage(compressed, fileName);
+        });
+
+        uploadedUrls.push(result.url);
+      }
+
+      progress.classList.remove('show');
+    }
+
+    // 2. 合併圖片 URL
+    const allImageUrls = [...existingUrls, ...uploadedUrls];
+
+    // 3. 組裝資料
+    const carData = {
+      brand: document.getElementById('f-brand').value.trim(),
+      name: document.getElementById('f-name').value.trim(),
+      year: document.getElementById('f-year').value.trim(),
+      mileage: document.getElementById('f-mileage').value.trim(),
+      price: document.getElementById('f-price').value.trim(),
+      image: allImageUrls.join('\n'),
+      badge: document.getElementById('f-badge').value.trim(),
+      description: document.getElementById('f-description').value.trim()
+    };
+
+    const rowNum = document.getElementById('edit-row').value;
+
+    // 4. 儲存到 Sheets
+    await new Promise((resolve, reject) => {
+      if (rowNum) {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(reject)
+          .updateCar(parseInt(rowNum), carData);
+      } else {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(reject)
+          .addCar(carData);
+      }
+    });
+
+    showToast(rowNum ? '車輛已更新' : '車輛已新增', 'success');
+    closeForm();
+    loadCars();
+
+  } catch (err) {
+    showToast('儲存失敗：' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> 儲存車輛';
+  }
+
+  return false;
+}
+
+// ===== DELETE =====
+function confirmDelete(rowNum, name) {
+  deleteRowTarget = rowNum;
+  document.getElementById('confirm-text').textContent = `確定要刪除「${name}」嗎？`;
+  document.getElementById('confirm-modal').classList.add('open');
+
+  document.getElementById('confirm-delete-btn').onclick = () => {
+    doDelete(rowNum);
+  };
+}
+
+function closeConfirm() {
+  document.getElementById('confirm-modal').classList.remove('open');
+  deleteRowTarget = null;
+}
+
+function doDelete(rowNum) {
+  const btn = document.getElementById('confirm-delete-btn');
+  btn.textContent = '刪除中...';
+  btn.disabled = true;
+
+  google.script.run
+    .withSuccessHandler(() => {
+      showToast('已刪除', 'success');
+      closeConfirm();
+      loadCars();
+    })
+    .withFailureHandler(err => {
+      showToast('刪除失敗：' + err.message, 'error');
+    })
+    .withUserObject(btn)
+    .deleteCar(rowNum);
+
+  // 恢復按鈕
+  setTimeout(() => {
+    btn.textContent = '確定刪除';
+    btn.disabled = false;
+  }, 2000);
+}
+
+// ===== TOAST =====
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
