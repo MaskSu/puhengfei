@@ -19,31 +19,21 @@ const CONFIG = {
   // 建立一個資料夾，從網址取得 ID：drive.google.com/drive/folders/【這段】
   DRIVE_FOLDER_ID: '12twZUvTEKOs6AefUw0CKMunQcyzhI2_E',
 
-  // 允許登入的 Google 帳號（可多個）
-  ALLOWED_EMAILS: [
-    'chienyuan1126@gmail.com'
-  ]
+  // 後台登入 PIN 碼（可自行修改）
+  PIN_CODE: '2361'
 };
 
 // ===== 網頁服務 =====
 function doGet(e) {
-  const user = Session.getActiveUser().getEmail();
-
-  // 檢查權限
-  if (!CONFIG.ALLOWED_EMAILS.includes(user)) {
-    return HtmlService.createHtmlOutput('<h2>⛔ 無權限存取</h2><p>此帳號未被授權：' + user + '</p>')
-      .setTitle('蒲恆菲車業 - 無權限');
-  }
-
   return HtmlService.createHtmlOutputFromFile('Admin')
     .setTitle('蒲恆菲車業 後台管理')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
 }
 
-// ===== 取得目前登入的使用者 =====
-function getCurrentUser() {
-  return Session.getActiveUser().getEmail();
+// ===== 驗證 PIN 碼 =====
+function verifyPin(pin) {
+  return pin === CONFIG.PIN_CODE;
 }
 
 // ===== 讀取所有車輛 =====

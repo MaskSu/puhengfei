@@ -330,18 +330,88 @@ body {
 .empty-state i { font-size: 48px; color: #ddd; margin-bottom: 12px; }
 .empty-state p { font-size: 14px; color: var(--text-secondary); }
 
+/* ===== PIN LOGIN ===== */
+.pin-screen {
+  position: fixed; inset: 0; z-index: 500;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.pin-screen.hidden { display: none; }
+.pin-box {
+  text-align: center; padding: 40px 24px;
+  width: 100%; max-width: 320px;
+}
+.pin-logo {
+  font-size: 36px; color: var(--gold); margin-bottom: 8px;
+}
+.pin-title {
+  font-size: 20px; font-weight: 700; margin-bottom: 4px;
+  color: var(--text-primary);
+}
+.pin-subtitle {
+  font-size: 13px; color: var(--text-secondary); margin-bottom: 32px;
+}
+.pin-dots {
+  display: flex; justify-content: center; gap: 12px;
+  margin-bottom: 28px;
+}
+.pin-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: all 0.2s;
+}
+.pin-dot.filled {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.pin-dot.error {
+  border-color: var(--danger);
+  background: var(--danger);
+  animation: pinShake 0.4s;
+}
+@keyframes pinShake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 260px; margin: 0 auto;
+}
+.pin-key {
+  width: 100%; aspect-ratio: 1.4;
+  border: none; border-radius: 12px;
+  background: var(--card);
+  font-size: 22px; font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-family: inherit;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.pin-key:active { background: var(--gold-bg); transform: scale(0.95); }
+.pin-key.empty { background: transparent; box-shadow: none; pointer-events: none; }
+.pin-key.backspace { font-size: 18px; color: var(--text-secondary); }
+.pin-key.backspace:active { color: var(--danger); }
+
 /* ===== TOAST ===== */
 .toast {
-  position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px);
   background: var(--text-primary); color: #fff;
-  padding: 10px 20px; border-radius: 10px;
+  padding: 12px 24px; border-radius: 24px;
   font-size: 14px; font-weight: 500;
   z-index: 999; opacity: 0;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
   pointer-events: none;
   white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  display: flex; align-items: center; gap: 8px;
 }
-.toast.show { opacity: 1; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.success { background: var(--success); }
 .toast.error { background: var(--danger); }
 
@@ -390,17 +460,49 @@ body {
 </head>
 <body>
 
+<!-- PIN LOGIN -->
+<div class="pin-screen" id="pin-screen">
+  <div class="pin-box">
+    <div class="pin-logo"><i class="fas fa-car"></i></div>
+    <div class="pin-title">蒲恆菲車業</div>
+    <div class="pin-subtitle">請輸入 PIN 碼進入後台</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+    </div>
+    <div class="pin-keypad" id="pin-keypad">
+      <button class="pin-key" data-num="1">1</button>
+      <button class="pin-key" data-num="2">2</button>
+      <button class="pin-key" data-num="3">3</button>
+      <button class="pin-key" data-num="4">4</button>
+      <button class="pin-key" data-num="5">5</button>
+      <button class="pin-key" data-num="6">6</button>
+      <button class="pin-key" data-num="7">7</button>
+      <button class="pin-key" data-num="8">8</button>
+      <button class="pin-key" data-num="9">9</button>
+      <button class="pin-key empty"></button>
+      <button class="pin-key" data-num="0">0</button>
+      <button class="pin-key backspace" id="pin-back"><i class="fas fa-delete-left"></i></button>
+    </div>
+  </div>
+</div>
+
 <!-- HEADER -->
-<header class="admin-header">
+<header class="admin-header" id="admin-header" style="display:none;">
   <h1><i class="fas fa-car"></i> 蒲恆菲車業</h1>
-  <span class="header-user" id="header-user"><i class="fas fa-circle"></i> 載入中...</span>
+  <button class="header-user" id="header-logout" onclick="doLogout()" style="border:none;background:none;cursor:pointer;">
+    <i class="fas fa-right-from-bracket" style="color:var(--text-secondary);"></i>
+    <span style="font-size:11px;color:var(--text-secondary);">登出</span>
+  </button>
 </header>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- CONTENT -->
-<div class="admin-content">
+<div class="admin-content" id="admin-content" style="display:none;">
   <button class="add-btn" onclick="openForm()"><i class="fas fa-plus"></i> 新增車輛</button>
   <div id="car-list" class="car-list">
     <div class="loading"><div class="spinner"></div><p>載入車輛資料中...</p></div>
@@ -506,17 +608,81 @@ let pendingFiles = []; // 待上傳的新圖片 { file, preview, uploaded: false
 let existingUrls = []; // 編輯模式下的既有圖片 URL
 let deleteRowTarget = null;
 
-// ===== INIT =====
-loadCars();
-loadUser();
+// ===== PIN LOGIN =====
+let pinCode = '';
+const PIN_LENGTH = 4;
 
-function loadUser() {
-  google.script.run
-    .withSuccessHandler(email => {
-      document.getElementById('header-user').innerHTML =
-        '<i class="fas fa-circle"></i> ' + email;
-    })
-    .getCurrentUser();
+// 檢查是否已登入（session storage）
+if (sessionStorage.getItem('admin_auth') === 'ok') {
+  unlockAdmin();
+}
+
+document.getElementById('pin-keypad').addEventListener('click', function(e) {
+  const btn = e.target.closest('.pin-key');
+  if (!btn) return;
+
+  if (btn.id === 'pin-back') {
+    // 退格
+    if (pinCode.length > 0) {
+      pinCode = pinCode.slice(0, -1);
+      updatePinDots();
+    }
+    return;
+  }
+
+  const num = btn.dataset.num;
+  if (num === undefined || pinCode.length >= PIN_LENGTH) return;
+
+  pinCode += num;
+  updatePinDots();
+
+  // 輸入滿 4 位數時驗證
+  if (pinCode.length === PIN_LENGTH) {
+    setTimeout(() => {
+      google.script.run
+        .withSuccessHandler(ok => {
+          if (ok) {
+            sessionStorage.setItem('admin_auth', 'ok');
+            unlockAdmin();
+          } else {
+            pinError();
+          }
+        })
+        .withFailureHandler(() => pinError())
+        .verifyPin(pinCode);
+    }, 200);
+  }
+});
+
+function updatePinDots() {
+  const dots = document.querySelectorAll('#pin-dots .pin-dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('filled', i < pinCode.length);
+    d.classList.remove('error');
+  });
+}
+
+function pinError() {
+  const dots = document.querySelectorAll('#pin-dots .pin-dot');
+  dots.forEach(d => { d.classList.add('error'); d.classList.remove('filled'); });
+  pinCode = '';
+  setTimeout(() => dots.forEach(d => d.classList.remove('error')), 500);
+}
+
+function unlockAdmin() {
+  document.getElementById('pin-screen').classList.add('hidden');
+  document.getElementById('admin-header').style.display = '';
+  document.getElementById('admin-content').style.display = '';
+  loadCars();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('admin_auth');
+  pinCode = '';
+  updatePinDots();
+  document.getElementById('pin-screen').classList.remove('hidden');
+  document.getElementById('admin-header').style.display = 'none';
+  document.getElementById('admin-content').style.display = 'none';
 }
 
 function loadCars() {
@@ -866,7 +1032,10 @@ function doDelete(rowNum) {
 // ===== TOAST =====
 function showToast(msg, type = '') {
   const toast = document.getElementById('toast');
-  toast.textContent = msg;
+  const icon = type === 'success' ? '<i class="fas fa-check-circle"></i> '
+    : type === 'error' ? '<i class="fas fa-times-circle"></i> '
+    : '<i class="fas fa-info-circle"></i> ';
+  toast.innerHTML = icon + msg;
   toast.className = 'toast show' + (type ? ' ' + type : '');
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
