@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>蒲恆菲車業 後台管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #f5f5f7; }
+iframe { width: 100%; height: 100%; border: none; display: none; }
+
+/* Loading Screen */
+.loading-screen {
+  position: fixed; inset: 0; z-index: 100;
+  background: #f5f5f7;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.4s ease;
+}
+.loading-screen.fade-out { opacity: 0; pointer-events: none; }
+
+.loading-logo {
+  width: 80px; height: 80px;
+  animation: logoPulse 1.6s ease-in-out infinite;
+}
+.loading-logo img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(156,124,56,0.2));
+}
+
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.loading-bar-wrap {
+  width: 120px; height: 3px;
+  background: rgba(156,124,56,0.12);
+  border-radius: 3px;
+  margin-top: 24px;
+  overflow: hidden;
+}
+.loading-bar {
+  width: 40%; height: 100%;
+  background: #9c7c38;
+  border-radius: 3px;
+  animation: loadSlide 1.2s ease-in-out infinite;
+}
+@keyframes loadSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+.loading-text {
+  margin-top: 14px;
+  font-family: 'Noto Sans TC', -apple-system, sans-serif;
+  font-size: 13px;
+  color: #9c7c38;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading">
+  <div class="loading-logo">
+    <img src="/fwdlogo/logo.png" alt="蒲恆菲車業">
+  </div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-text">載入中</div>
+</div>
+
+<iframe id="admin-frame" src="https://script.google.com/macros/s/AKfycbyLdV8FD8-m7njJvyuK2c3gKx8fVD1ruJGctxWbKI4BFSPTlGMxTbYYr-eEnM_X_aCa/exec" allowfullscreen></iframe>
+
+<script>
+const iframe = document.getElementById('admin-frame');
+const loading = document.getElementById('loading');
+
+iframe.addEventListener('load', () => {
+  loading.classList.add('fade-out');
+  iframe.style.display = 'block';
+  setTimeout(() => loading.remove(), 500);
+});
+
+// 安全兜底：最長 8 秒後強制顯示
+setTimeout(() => {
+  if (loading.parentNode) {
+    loading.classList.add('fade-out');
+    iframe.style.display = 'block';
+    setTimeout(() => loading.remove(), 500);
+  }
+}, 8000);
+</script>
+</body>
+</html>
