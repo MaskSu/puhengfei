@@ -19,8 +19,8 @@ const CONFIG = {
   // 建立一個資料夾，從網址取得 ID：drive.google.com/drive/folders/【這段】
   DRIVE_FOLDER_ID: '12twZUvTEKOs6AefUw0CKMunQcyzhI2_E',
 
-  // 後台登入 PIN 碼（可自行修改）
-  PIN_CODE: '2361'
+  // 後台登入 PIN 碼（支援多組）
+  PIN_CODES: ['2361', '3349']
 };
 
 // ===== 網頁服務 =====
@@ -33,7 +33,7 @@ function doGet(e) {
 
 // ===== 驗證 PIN 碼 =====
 function verifyPin(pin) {
-  return pin === CONFIG.PIN_CODE;
+  return CONFIG.PIN_CODES.includes(pin);
 }
 
 // ===== 讀取所有車輛 =====
