@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="lU95WbfXCEoUBBJkehptr-0I9--JUsSKNCcKVi9KIdw">
     <title>蒲恆菲車業 | 台南外匯車、二手車買賣、汽車精品改裝</title>
     <meta name="description" content="蒲恆菲車業 - 台南專營外匯車、二手車買賣，美規日規歐規進口車，汽車精品改裝、ECU動力升級。台南市仁德區大同路三段202號，誠信經營，高價收購。">
     <meta name="keywords" content="蒲恆菲車業,台南二手車,台南外匯車,二手車買賣,外匯車,美規車,日規車,歐規車,汽車改裝,ECU升級,台南中古車,仁德二手車,進口車,高價收購">
@@ -2202,13 +2203,30 @@
     }
 
     // 優先從 Google Sheets 載入，失敗時 fallback 到本地 cars.json
+    function showLoadError() {
+        const grid = document.getElementById('inventory-grid');
+        if (grid) grid.innerHTML = `
+            <div class="inventory-empty">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>車輛資料載入失敗</p>
+                <p class="empty-hint">請稍後重新整理頁面，或聯繫我們了解在庫車輛</p>
+            </div>`;
+    }
     fetch(SHEET_CSV)
         .then(r => { if (!r.ok) throw new Error('Sheet fetch failed'); return r.text(); })
-        .then(csv => initInventory(parseCSV(csv)))
+        .then(csv => {
+            const cars = parseCSV(csv);
+            if (cars.length === 0) throw new Error('No cars');
+            initInventory(cars);
+        })
         .catch(() => {
             fetch('cars.json')
-                .then(r => r.json())
-                .then(cars => initInventory(cars));
+                .then(r => { if (!r.ok) throw new Error('JSON fetch failed'); return r.json(); })
+                .then(cars => {
+                    if (!cars || cars.length === 0) throw new Error('No cars');
+                    initInventory(cars);
+                })
+                .catch(() => showLoadError());
         });
 
     // Smooth scroll for nav links
