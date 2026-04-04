@@ -397,6 +397,19 @@ body {
 .pin-key.empty { background: transparent; box-shadow: none; pointer-events: none; }
 .pin-key.backspace { font-size: 18px; color: var(--text-secondary); }
 .pin-key.backspace:active { color: var(--danger); }
+.pin-login-btn {
+  display: block; width: 260px; margin: 20px auto 0;
+  padding: 14px; border: none; border-radius: 12px;
+  background: var(--border); color: var(--text-secondary);
+  font-size: 16px; font-weight: 600;
+  cursor: not-allowed; font-family: inherit;
+  transition: all 0.3s;
+}
+.pin-login-btn.ready {
+  background: var(--gold); color: #fff;
+  cursor: pointer;
+}
+.pin-login-btn.ready:active { transform: scale(0.97); }
 
 /* ===== TOAST ===== */
 .toast {
@@ -486,6 +499,7 @@ body {
       <button class="pin-key" data-num="0">0</button>
       <button class="pin-key backspace" id="pin-back"><i class="fas fa-delete-left"></i></button>
     </div>
+    <button class="pin-login-btn" id="pin-login-btn" onclick="doLogin()">登入</button>
   </div>
 </div>
 
@@ -636,23 +650,44 @@ document.getElementById('pin-keypad').addEventListener('click', function(e) {
   pinCode += num;
   updatePinDots();
 
-  // 輸入滿 4 位數時驗證
-  if (pinCode.length === PIN_LENGTH) {
-    setTimeout(() => {
-      google.script.run
-        .withSuccessHandler(ok => {
-          if (ok) {
-            sessionStorage.setItem('admin_auth', 'ok');
-            unlockAdmin();
-          } else {
-            pinError();
-          }
-        })
-        .withFailureHandler(() => pinError())
-        .verifyPin(pinCode);
-    }, 200);
-  }
+  // 輸入滿 4 位數時啟用登入按鈕
+  updateLoginBtn();
 });
+
+function updateLoginBtn() {
+  const btn = document.getElementById('pin-login-btn');
+  if (pinCode.length === PIN_LENGTH) {
+    btn.classList.add('ready');
+    btn.disabled = false;
+  } else {
+    btn.classList.remove('ready');
+    btn.disabled = true;
+  }
+}
+
+function doLogin() {
+  if (pinCode.length !== PIN_LENGTH) return;
+  const btn = document.getElementById('pin-login-btn');
+  btn.textContent = '驗證中...';
+  btn.classList.remove('ready');
+  btn.disabled = true;
+
+  google.script.run
+    .withSuccessHandler(ok => {
+      if (ok) {
+        sessionStorage.setItem('admin_auth', 'ok');
+        unlockAdmin();
+      } else {
+        pinError();
+        btn.textContent = '登入';
+      }
+    })
+    .withFailureHandler(() => {
+      pinError();
+      btn.textContent = '登入';
+    })
+    .verifyPin(pinCode);
+}
 
 function updatePinDots() {
   const dots = document.querySelectorAll('#pin-dots .pin-dot');
@@ -660,13 +695,17 @@ function updatePinDots() {
     d.classList.toggle('filled', i < pinCode.length);
     d.classList.remove('error');
   });
+  updateLoginBtn();
 }
 
 function pinError() {
   const dots = document.querySelectorAll('#pin-dots .pin-dot');
   dots.forEach(d => { d.classList.add('error'); d.classList.remove('filled'); });
   pinCode = '';
-  setTimeout(() => dots.forEach(d => d.classList.remove('error')), 500);
+  setTimeout(() => {
+    dots.forEach(d => d.classList.remove('error'));
+    updateLoginBtn();
+  }, 500);
 }
 
 function unlockAdmin() {
@@ -680,6 +719,10 @@ function doLogout() {
   sessionStorage.removeItem('admin_auth');
   pinCode = '';
   updatePinDots();
+  const loginBtn = document.getElementById('pin-login-btn');
+  loginBtn.textContent = '登入';
+  loginBtn.classList.remove('ready');
+  loginBtn.disabled = true;
   document.getElementById('pin-screen').classList.remove('hidden');
   document.getElementById('admin-header').style.display = 'none';
   document.getElementById('admin-content').style.display = 'none';
