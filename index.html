@@ -1973,9 +1973,9 @@
             () => applyFilters()
         );
 
-        // 年份起迄
+        // 年份起迄（依在庫車年份上下限，間距 1 年）
         const years = cars.map(c => extractYear(c.year)).filter(Boolean);
-        const minY = 2000;
+        const minY = years.length ? Math.min(...years) : new Date().getFullYear();
         const maxY = years.length ? Math.max(...years) : new Date().getFullYear();
         const yearOpts = [{ value: '', text: '不限' }];
         for (let y = maxY; y >= minY; y--) yearOpts.push({ value: String(y), text: y + '年' });
