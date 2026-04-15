@@ -205,14 +205,15 @@
             letter-spacing: 3px;
         }
         .nav-links {
-            display: flex; gap: 8px; list-style: none;
+            display: flex; gap: 4px; list-style: none;
         }
         .nav-links a {
-            padding: 10px 22px; font-size: 15px; font-weight: 500;
+            padding: 8px 14px; font-size: 14px; font-weight: 500;
             color: var(--text-secondary);
             border-radius: 6px;
             transition: all 0.3s ease;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
         .nav-links a:hover, .nav-links a.active {
             color: var(--gold);
@@ -222,7 +223,7 @@
             background: var(--gradient-gold) !important;
             color: #0a0a0a !important;
             font-weight: 700 !important;
-            padding: 10px 28px !important;
+            padding: 8px 18px !important;
         }
         .nav-cta:hover {
             transform: translateY(-2px);
@@ -1363,20 +1364,21 @@
         .float-btn.email { background: #4a5568; }
         .float-btn.map { background: #ea4335; }
 
-        /* Header 在庫車輛按鈕 */
+        /* Header 在庫車輛按鈕（僅手機版顯示） */
         .nav-inventory-btn {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 7px 14px;
+            display: none;
+            align-items: center; gap: 6px;
+            padding: 6px 12px;
             border-radius: 20px;
             background: var(--gold);
             color: #fff;
-            font-size: 13px; font-weight: 600;
+            font-size: 12px; font-weight: 600;
             text-decoration: none;
             white-space: nowrap;
             transition: all 0.3s ease;
             margin-left: 8px;
         }
-        .nav-inventory-btn i { font-size: 12px; }
+        .nav-inventory-btn i { font-size: 11px; }
         .nav-inventory-btn:hover {
             background: #b8922e;
             box-shadow: 0 3px 12px rgba(201,168,76,0.4);
@@ -1384,7 +1386,7 @@
         @media (max-width: 768px) {
             .float-sidebar { right: 10px; top: 18%; bottom: auto; }
             .float-btn { width: 42px; height: 42px; font-size: 19px; }
-            .nav-inventory-btn { padding: 6px 12px; font-size: 12px; }
+            .nav-inventory-btn { display: inline-flex; }
         }
 
         /* ===== ANIMATIONS ===== */
