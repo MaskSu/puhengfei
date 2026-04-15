@@ -73,10 +73,19 @@
       ],
       "sameAs": [
         "https://www.facebook.com/puhengfei",
-        "https://www.instagram.com/puhengfei_car",
+        "https://www.instagram.com/itshengfeipu",
         "https://www.tiktok.com/@puhengfei_car"
       ],
       "priceRange": "$$"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "蒲恆菲車業",
+      "alternateName": ["蒲恆菲", "PHF", "puhengfeisc"],
+      "url": "https://www.puhengfeisc.com"
     }
     </script>
 
@@ -834,6 +843,28 @@
             scroll-snap-align: start;
             flex-shrink: 0;
         }
+        .car-modal-gallery-wrap {
+            position: relative;
+        }
+        .car-modal-arrow {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            z-index: 10;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.35);
+            color: #fff;
+            border: none;
+            font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .car-modal-arrow:hover { background: rgba(0,0,0,0.6); }
+        .car-modal-arrow.left { left: 10px; }
+        .car-modal-arrow.right { right: 10px; }
+        .car-modal-arrow.hidden { display: none; }
         .car-modal-dots {
             display: flex;
             justify-content: center;
@@ -1231,9 +1262,29 @@
         .float-btn.phone { background: var(--gold); }
         .float-btn.email { background: #4a5568; }
         .float-btn.map { background: #ea4335; }
+
+        /* Header 在庫車輛按鈕 */
+        .nav-inventory-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: var(--gold);
+            color: #fff;
+            font-size: 13px; font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+        }
+        .nav-inventory-btn i { font-size: 12px; }
+        .nav-inventory-btn:hover {
+            background: #b8922e;
+            box-shadow: 0 3px 12px rgba(201,168,76,0.4);
+        }
         @media (max-width: 768px) {
             .float-sidebar { right: 10px; top: 18%; bottom: auto; }
             .float-btn { width: 42px; height: 42px; font-size: 19px; }
+            .nav-inventory-btn { padding: 6px 12px; font-size: 12px; }
         }
 
         /* ===== ANIMATIONS ===== */
@@ -1391,6 +1442,7 @@
             <li><a href="#testimonials">顧客評價</a></li>
             <li><a href="#contact" class="nav-cta">聯絡我們</a></li>
         </ul>
+        <a href="#inventory" class="nav-inventory-btn"><i class="fas fa-car"></i> 在庫車輛</a>
         <button class="mobile-toggle" onclick="toggleMenu()">
             <i class="fas fa-bars" id="menuIcon"></i>
         </button>
@@ -1679,7 +1731,7 @@
                 </div>
                 <div class="contact-social">
                     <a href="https://www.facebook.com/p/%E6%86%B2%E6%86%B2-l-%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD-100064702431090/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/explore/locations/111778700975486/l/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/itshengfeipu" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.tiktok.com/tag/%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
                     <a href="https://line.me/ti/p/~a791201" target="_blank" class="social-btn"><i class="fab fa-line"></i></a>
                     <a href="tel:0938512236" class="social-btn"><i class="fas fa-phone"></i></a>
@@ -1754,7 +1806,7 @@
 <div class="float-sidebar">
     <a href="https://line.me/ti/p/~a791201" target="_blank" class="float-btn line" title="LINE"><i class="fab fa-line"></i></a>
     <a href="https://www.facebook.com/p/%E6%86%B2%E6%86%B2-l-%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD-100064702431090/" target="_blank" class="float-btn fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/explore/locations/111778700975486/l/" target="_blank" class="float-btn ig" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.instagram.com/itshengfeipu" target="_blank" class="float-btn ig" title="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="https://www.tiktok.com/tag/%E8%92%B2%E6%81%86%E8%8F%B2%E8%BB%8A%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" target="_blank" class="float-btn tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="tel:0938512236" class="float-btn phone" title="撥打電話"><i class="fas fa-phone"></i></a>
 </div>
@@ -2162,11 +2214,38 @@
         gallery.innerHTML = imgs.map(src => `<img src="${src}" alt="${car.name}" loading="lazy">`).join('');
         gallery.scrollLeft = 0;
 
+        // 箭頭按鈕
+        const arrowLeft = document.getElementById('gallery-arrow-left');
+        const arrowRight = document.getElementById('gallery-arrow-right');
+
+        function updateArrows() {
+            const imgW = gallery.querySelector('img')?.offsetWidth || gallery.clientWidth;
+            const idx = Math.round(gallery.scrollLeft / imgW);
+            arrowLeft.classList.toggle('hidden', idx <= 0);
+            arrowRight.classList.toggle('hidden', idx >= imgs.length - 1);
+        }
+
+        if (imgs.length > 1) {
+            arrowLeft.classList.add('hidden');
+            arrowRight.classList.remove('hidden');
+
+            arrowLeft.onclick = () => {
+                const imgW = gallery.querySelector('img').offsetWidth || gallery.clientWidth;
+                gallery.scrollBy({ left: -imgW, behavior: 'smooth' });
+            };
+            arrowRight.onclick = () => {
+                const imgW = gallery.querySelector('img').offsetWidth || gallery.clientWidth;
+                gallery.scrollBy({ left: imgW, behavior: 'smooth' });
+            };
+        } else {
+            arrowLeft.classList.add('hidden');
+            arrowRight.classList.add('hidden');
+        }
+
         // 渲染小圓點
         if (imgs.length > 1) {
             dots.style.display = 'flex';
             dots.innerHTML = imgs.map((_, i) => `<button class="car-modal-dot${i===0?' active':''}" data-idx="${i}"></button>`).join('');
-            // 圓點點擊：用第一張圖的實際寬度計算
             dots.querySelectorAll('.car-modal-dot').forEach(dot => {
                 dot.addEventListener('click', () => {
                     const i = parseInt(dot.dataset.idx);
@@ -2174,7 +2253,6 @@
                     gallery.scrollTo({ left: imgW * i, behavior: 'smooth' });
                 });
             });
-            // 滾動同步圓點（加 debounce 避免連續觸發）
             let scrollTimer;
             gallery.addEventListener('scroll', () => {
                 clearTimeout(scrollTimer);
@@ -2182,6 +2260,7 @@
                     const imgW = gallery.querySelector('img').offsetWidth || gallery.clientWidth;
                     const idx = Math.round(gallery.scrollLeft / imgW);
                     dots.querySelectorAll('.car-modal-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+                    updateArrows();
                 }, 50);
             });
         } else {
@@ -2256,7 +2335,11 @@
 <div class="car-modal-overlay" id="car-modal-overlay">
     <div class="car-modal">
         <button class="car-modal-close"><i class="fas fa-times"></i></button>
-        <div class="car-modal-gallery"></div>
+        <div class="car-modal-gallery-wrap">
+            <button class="car-modal-arrow left hidden" id="gallery-arrow-left"><i class="fas fa-chevron-left"></i></button>
+            <div class="car-modal-gallery"></div>
+            <button class="car-modal-arrow right hidden" id="gallery-arrow-right"><i class="fas fa-chevron-right"></i></button>
+        </div>
         <div class="car-modal-dots"></div>
         <div class="car-modal-body"></div>
     </div>
