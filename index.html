@@ -88,6 +88,54 @@
       "url": "https://www.puhengfeisc.com"
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "現場看的車跟網路上的照片、價格是一樣的嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "「實車在店」與「實價刊登」。官網所見即為現場實際狀況，若車輛已售出會立即下架，避免客戶白跑一趟。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "你們的車都有經過第三方認證嗎？有沒有重大事故或泡水？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "本店有配合日本 GOO 鑑定、SAVE 認證、HOT 認證等第三方鑑定機構。達標之車輛皆會提供鑑定報告供查驗。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "買中古車有提供保固嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "汽車售出前，皆會告知車輛狀況，車況資訊絕對透明。若希望有後續保障，車行也有配合零件保固險（例如：引擎、變速箱、方向機等五大機能件）。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "我想買車但預算有限，可以辦理貸款嗎？信用瑕疵可以過件嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "有配合多家銀行與融資公司，提供低利率、長年期貸款方案。專業貸款團隊也會針對客戶的條件免費提供諮詢，與協助試算。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "車子還有貸款，可以車換車嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "可以的，有收購汽車及代清償原車貸之業務，協助辦理換車服務。"
+          }
+        }
+      ]
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -1034,6 +1082,58 @@
             font-size: 12px; color: var(--text-secondary);
         }
 
+        /* ===== FAQ ===== */
+        .faq { background: var(--dark-bg); }
+        .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .faq-item {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .faq-item.open { border-color: var(--gold); }
+        .faq-question {
+            display: flex; align-items: center; gap: 12px;
+            padding: 18px 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .faq-question .faq-icon {
+            flex-shrink: 0;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: rgba(201,168,76,0.1);
+            color: var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-question .faq-icon { transform: rotate(180deg); }
+        .faq-question span {
+            flex: 1;
+            font-size: 15px; font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        .faq-answer {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+        .faq-answer-inner {
+            padding: 0 20px 18px 60px;
+            font-size: 14px; color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        @media (max-width: 768px) {
+            .faq-question { padding: 16px; gap: 10px; }
+            .faq-question span { font-size: 14px; }
+            .faq-answer-inner { padding: 0 16px 16px 50px; font-size: 13px; }
+        }
+
         /* ===== CONTACT ===== */
         .contact {
             background: var(--dark-surface);
@@ -1440,6 +1540,7 @@
             <li><a href="#inventory">在庫車輛</a></li>
             <li><a href="#why">為何選我們</a></li>
             <li><a href="#testimonials">顧客評價</a></li>
+            <li><a href="#faq">常見問題</a></li>
             <li><a href="#contact" class="nav-cta">聯絡我們</a></li>
         </ul>
         <a href="#inventory" class="nav-inventory-btn"><i class="fas fa-car"></i> 在庫車輛</a>
@@ -1456,6 +1557,7 @@
     <a href="#inventory" onclick="toggleMenu()">在庫車輛</a>
     <a href="#why" onclick="toggleMenu()">為何選我們</a>
     <a href="#testimonials" onclick="toggleMenu()">顧客評價</a>
+    <a href="#faq" onclick="toggleMenu()">常見問題</a>
     <a href="#contact" onclick="toggleMenu()">聯絡我們</a>
 </div>
 
@@ -1683,6 +1785,54 @@
     </div>
 </section>
 
+<!-- FAQ -->
+<section class="faq" id="faq">
+    <div class="section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-tag">FAQ</div>
+            <h2 class="section-title">常見問題</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-question">
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    <span>現場看的車跟網路上的照片、價格是一樣的嗎？</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner">「實車在店」與「實價刊登」。官網所見即為現場實際狀況，若車輛已售出會立即下架，避免客戶白跑一趟。</div></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-question">
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    <span>你們的車都有經過第三方認證嗎？有沒有重大事故或泡水？</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner">本店有配合日本 GOO 鑑定、SAVE 認證、HOT 認證等第三方鑑定機構。達標之車輛皆會提供鑑定報告供查驗。</div></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-question">
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    <span>買中古車有提供保固嗎？</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner">汽車售出前，皆會告知車輛狀況，車況資訊絕對透明。若希望有後續保障，車行也有配合零件保固險（例如：引擎、變速箱、方向機等五大機能件）。</div></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-question">
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    <span>我想買車但預算有限，可以辦理貸款嗎？信用瑕疵可以過件嗎？</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner">有配合多家銀行與融資公司，提供低利率、長年期貸款方案。專業貸款團隊也會針對客戶的條件免費提供諮詢，與協助試算。</div></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-question">
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    <span>車子還有貸款，可以車換車嗎？</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner">可以的，有收購汽車及代清償原車貸之業務，協助辦理換車服務。</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact" id="contact">
     <div class="section">
@@ -1763,6 +1913,7 @@
                 <li><a href="#services">服務項目</a></li>
                 <li><a href="#inventory">在庫車輛</a></li>
                 <li><a href="#testimonials">顧客評價</a></li>
+                <li><a href="#faq">常見問題</a></li>
                 <li><a href="#contact">聯絡我們</a></li>
             </ul>
         </div>
